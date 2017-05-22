@@ -10,7 +10,7 @@ namespace KokeiroLifeLogger
     {
         private static string GetTitle()
         {
-            return DateTime.Now.Date.ToString("yyyymmdd") + "のライフログ";
+            return DateTime.Now.Date.ToString("yyyyMMdd") + "のライフログ";
         }
 
         private static async Task<string> GetBodyAsync()
