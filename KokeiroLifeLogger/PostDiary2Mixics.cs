@@ -16,18 +16,18 @@ namespace KokeiroLifeLogger
 
     public static class PostDiary2Mixics
     {
-        [FunctionName("TimerTriggerCSharp")]
-        //public static async Task Run([TimerTrigger("*/5 * * * * *")]TimerInfo myTimer, TraceWriter log)
+        [FunctionName("PostDiary2Mixics")]
         public static async Task Run([TimerTrigger("0 0 20 * * *")]TimerInfo myTimer, TraceWriter log)
         {
             log.Info($"C# Timer trigger function executed at: {DateTime.Now}");
             var from = ConfigurationManager.AppSettings["MixiPostMail"];
             var to = ConfigurationManager.AppSettings["MixiPostMailTo"];
-            var subject = GetTitle();
-            var body = await GetBodyAsync();
+
+            var crawler = new LifeLogCrawler();
+            var lifeLog = await crawler.CrawlAsync();
             var fromPassword = ConfigurationManager.AppSettings["MixiPostMailPassword"];
 
-            SendMail(from, to, subject, body, fromPassword);
+            SendMail(from, to, lifeLog.Title, lifeLog.Body, fromPassword);
         }
 
         private static void SendMail(string from, string to, string subject, string body, string fromPassword)
@@ -42,29 +42,6 @@ namespace KokeiroLifeLogger
                 sc.EnableSsl = true;
                 sc.Send(msg);
             }
-        }
-
-        private static string GetTitle()
-        {
-            return DateTime.Now.Date.ToString("yyyymmdd") + "のライフログ";
-        }
-
-        private static async Task<string> GetBodyAsync()
-        {
-            var now = DateTime.Now;
-
-            var from = now.Date.AddDays(-1);
-            var to = now;
-
-            var sb = new StringBuilder();
-
-            sb.AppendLine("※自動ポスト※");
-            sb.AppendLine();
-            sb.AppendLine();
-
-            sb.AppendLine(await IFTTTHttpTrigger.GetData(from, to));
-
-            return sb.ToString();
         }
     }
 }
