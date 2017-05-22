@@ -49,10 +49,10 @@ namespace KokeiroLifeLogger
 
         private static async Task<string> GetBodyAsync()
         {
-            var now = DateTime.Now.Date;
+            var now = DateTime.Now;
 
             var from = now.Date.AddDays(-1);
-            var to = from.AddDays(1);
+            var to = now;
 
             // TODO: 必要な情報を適当なストレージから引っ張ってきて整形する。
             // Model用意したほうが良さそうね。

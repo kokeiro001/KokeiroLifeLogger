@@ -12,6 +12,7 @@ using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace KokeiroLifeLogger
 {
@@ -59,23 +60,43 @@ namespace KokeiroLifeLogger
         {
             var table = await GetCloudTableAsync();
 
-            var query = new TableQuery<IFTTTEntity>()
-                            .Where(TableQuery.GenerateFilterConditionForDate("InsertedItme", QueryComparisons.GreaterThanOrEqual, from));
-            var result = table.ExecuteQuery(query);
+            var propertyName = nameof(IFTTTEntity.InsertedItme);
+            var filter1 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.GreaterThanOrEqual, from);
+            var filter2 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.LessThanOrEqual, to);
+
+            var finalFilter = TableQuery.CombineFilters(filter1, "and", filter2);
+
+            var query = new TableQuery<IFTTTEntity>().Where(finalFilter);
+            var items = table.ExecuteQuery(query);
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("-------------------------------------");
-            sb.AppendLine("今日Pocketに突っ込んだ記事");
-            sb.AppendLine();
-            foreach (var item in result)
-            {
-                sb.AppendLine(item.Title);
-                sb.AppendLine(item.Url);
-                sb.AppendLine();
-            }
-            sb.AppendLine("-------------------------------------");
+            AppendStringByPartitionKey(items, sb, "pocket", "今日Pocketに突っ込んだ記事");
+            AppendStringByPartitionKey(items, sb, "twitter_like", "今日Twitterでイイねしたツイート");
+            AppendStringByPartitionKey(items, sb, "github_star", "今日GitHubでStarつけたリポジトリ");
             return sb.ToString();
+        }
+
+        private static void AppendStringByPartitionKey(IEnumerable<IFTTTEntity> items, StringBuilder sb, string key, string title)
+        {
+            sb.AppendLine("-------------------------------------");
+            sb.AppendLine(title);
+            sb.AppendLine();
+            var targetItems = items.Where(x => x.PartitionKey == key).ToArray();
+            if (targetItems.Length == 0)
+            {
+                sb.AppendLine("(なし)");
+            }
+            else
+            {
+                foreach (var item in targetItems)
+                {
+                    sb.AppendLine(item.Title);
+                    sb.AppendLine(item.Url);
+                    sb.AppendLine();
+                }
+            }
+            sb.AppendLine();
         }
 
         private static async Task<CloudTable> GetCloudTableAsync()
