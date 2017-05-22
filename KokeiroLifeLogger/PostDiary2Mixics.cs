@@ -4,6 +4,9 @@ using Microsoft.Azure.WebJobs.Host;
 using System.Net.Mail;
 using System.Net;
 using System.Configuration;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.Azure;
+using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger
 {
@@ -19,7 +22,7 @@ namespace KokeiroLifeLogger
             var from = ConfigurationManager.AppSettings["MixiPostMail"];
             var to = ConfigurationManager.AppSettings["MixiPostMailTo"];
             var subject = GetTitle();
-            var body = GetBody();
+            var body = await GetBodyAsync();
             var fromPassword = ConfigurationManager.AppSettings["MixiPostMailPassword"];
 
             SendMail(from, to, subject, body, fromPassword);
@@ -44,17 +47,17 @@ namespace KokeiroLifeLogger
             return DateTime.Now.Date.AddDays(-1).ToString("yyyymmdd") + "のライフログ";
         }
 
-        private static string GetBody()
+        private static async Task<string> GetBodyAsync()
         {
             var now = DateTime.Now.Date;
 
-            var fromDate = now.Date.AddDays(-1).AddHours(5);
-            var toDate = fromDate.AddDays(1);
+            var from = now.Date.AddDays(-1);
+            var to = from.AddDays(1);
 
             // TODO: 必要な情報を適当なストレージから引っ張ってきて整形する。
             // Model用意したほうが良さそうね。
 
-            return "hogehoge";
+            return await IFTTTHttpTrigger.GetData(from, to);
         }
     }
 }

@@ -11,6 +11,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
+using System.Text;
 
 namespace KokeiroLifeLogger
 {
@@ -32,13 +33,7 @@ namespace KokeiroLifeLogger
 
             log.Info($"title={title}, url={url}, from={from}");
 
-
-            var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("AzureWebJobsStorage"));
-            var tableClient = storageAccount.CreateCloudTableClient();
-
-            var table = tableClient.GetTableReference(TableName);
-            await table.CreateIfNotExistsAsync();
-
+            var table = await GetCloudTableAsync();
 
             var entity = new IFTTTEntity(from, url.GetHashCode().ToString())
             {
@@ -58,6 +53,38 @@ namespace KokeiroLifeLogger
                 log.Error(e.Message + " " + e.StackTrace);
                 throw;
             }
+        }
+
+        public static async Task<string> GetData(DateTime from, DateTime to)
+        {
+            var table = await GetCloudTableAsync();
+
+            var query = new TableQuery<IFTTTEntity>()
+                            .Where(TableQuery.GenerateFilterConditionForDate("InsertedItme", QueryComparisons.GreaterThanOrEqual, from));
+            var result = table.ExecuteQuery(query);
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("-------------------------------------");
+            sb.AppendLine("今日Pocketに突っ込んだ記事");
+            sb.AppendLine();
+            foreach (var item in result)
+            {
+                sb.AppendLine(item.Title);
+                sb.AppendLine(item.Url);
+                sb.AppendLine();
+            }
+            sb.AppendLine("-------------------------------------");
+            return sb.ToString();
+        }
+
+        private static async Task<CloudTable> GetCloudTableAsync()
+        {
+            var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("AzureWebJobsStorage"));
+            var tableClient = storageAccount.CreateCloudTableClient();
+            var table = tableClient.GetTableReference(TableName);
+            await table.CreateIfNotExistsAsync();
+            return table;
         }
     }
 
