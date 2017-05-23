@@ -13,6 +13,8 @@ using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using KokeiroLifeLogger.Utilities;
 
 namespace KokeiroLifeLogger
 {
@@ -56,6 +58,8 @@ namespace KokeiroLifeLogger
             }
         }
 
+        #region Output
+
         public static async Task<string> GetData(DateTime from, DateTime to)
         {
             var table = await GetCloudTableAsync();
@@ -72,7 +76,7 @@ namespace KokeiroLifeLogger
             var sb = new StringBuilder();
 
             AppendStringByPartitionKey(items, sb, "pocket", "今日Pocketに突っ込んだ記事");
-            AppendStringByPartitionKey(items, sb, "twitter_like", "今日Twitterでイイねしたツイート");
+            AppendStringTwitterLiked(items, sb);
             AppendStringByPartitionKey(items, sb, "github_star", "今日GitHubでStarつけたリポジトリ");
             return sb.ToString();
         }
@@ -83,6 +87,7 @@ namespace KokeiroLifeLogger
             sb.AppendLine(title);
             sb.AppendLine();
             var targetItems = items.Where(x => x.PartitionKey == key).ToArray();
+
             if (targetItems.Length == 0)
             {
                 sb.AppendLine("(なし)");
@@ -98,6 +103,32 @@ namespace KokeiroLifeLogger
             }
             sb.AppendLine();
         }
+        private static void AppendStringTwitterLiked(IEnumerable<IFTTTEntity> items, StringBuilder sb)
+        {
+            sb.AppendLine("-------------------------------------");
+            sb.AppendLine("今日Twitterでイイねしたツイート");
+            sb.AppendLine();
+            var targetItems = items.Where(x => x.PartitionKey == "twitter_like").ToArray();
+            if (targetItems.Length == 0)
+            {
+                sb.AppendLine("(なし)");
+            }
+            else
+            {
+                foreach (var item in targetItems)
+                {
+                    // httpとか含むなら、そいつは削除する
+                    var title = StringUtility.RemoveHttp(item.Title).TrimEnd();
+                    if (string.IsNullOrEmpty(title))
+                    {
+                        sb.AppendLine(title);
+                    }
+                    sb.AppendLine(item.Url);
+                    sb.AppendLine();
+                }
+            }
+            sb.AppendLine();
+        }
 
         private static async Task<CloudTable> GetCloudTableAsync()
         {
@@ -107,6 +138,10 @@ namespace KokeiroLifeLogger
             await table.CreateIfNotExistsAsync();
             return table;
         }
+
+        #endregion
+
+
     }
 
     public class IFTTTEntity: TableEntity

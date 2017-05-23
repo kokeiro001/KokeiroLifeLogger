@@ -22,7 +22,7 @@ namespace KokeiroLifeLogger
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("※自動ポスト※");
+            sb.AppendLine("※自動ポストでぇ～す※");
             sb.AppendLine();
             sb.AppendLine();
 
