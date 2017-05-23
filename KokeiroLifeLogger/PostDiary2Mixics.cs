@@ -27,6 +27,12 @@ namespace KokeiroLifeLogger
             var lifeLog = await crawler.CrawlAsync();
             var fromPassword = ConfigurationManager.AppSettings["MixiPostMailPassword"];
 
+            var isLocal = CloudConfigurationManager.GetSetting("IsLocal");
+            if (isLocal == "true")
+            {
+                log.Info($"local running!!! skip SendMail. Title={lifeLog.Title}, Body={lifeLog.Body}");
+                return;
+            }
             SendMail(from, to, lifeLog.Title, lifeLog.Body, fromPassword);
         }
 
