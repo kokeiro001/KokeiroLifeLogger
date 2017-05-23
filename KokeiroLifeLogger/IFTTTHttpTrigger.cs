@@ -69,7 +69,7 @@ namespace KokeiroLifeLogger
             var finalFilter = TableQuery.CombineFilters(filter1, "and", filter2);
 
             var query = new TableQuery<IFTTTEntity>().Where(finalFilter);
-            var items = table.ExecuteQuery(query);
+            var items = table.ExecuteQuery(query).OrderBy(x => x.InsertedItme);
 
             var sb = new StringBuilder();
 
@@ -117,7 +117,7 @@ namespace KokeiroLifeLogger
                 {
                     // httpとか含むなら、そいつは削除する
                     var title = StringUtility.RemoveHttp(item.Title).TrimEnd();
-                    if (string.IsNullOrEmpty(title))
+                    if (!string.IsNullOrEmpty(title))
                     {
                         sb.AppendLine(title);
                     }
