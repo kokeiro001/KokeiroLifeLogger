@@ -4,10 +4,8 @@ using Microsoft.Azure.WebJobs.Host;
 using System.Net.Mail;
 using System.Net;
 using System.Configuration;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.Azure;
 using System.Threading.Tasks;
-using System.Text;
 
 namespace KokeiroLifeLogger
 {

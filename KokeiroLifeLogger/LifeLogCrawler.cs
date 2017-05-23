@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,7 +24,8 @@ namespace KokeiroLifeLogger
             sb.AppendLine();
             sb.AppendLine();
 
-            sb.AppendLine(await IFTTTHttpTrigger.GetData(from, to));
+            sb.AppendLine(await IFTTTHttpTrigger.GetDataAsync(from, to));
+            sb.AppendLine(await WeightMeasurementTrigger.GetDataAsync(from, to));
 
             return sb.ToString();
         }

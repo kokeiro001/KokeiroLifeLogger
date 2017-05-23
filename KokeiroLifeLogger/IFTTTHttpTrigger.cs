@@ -4,7 +4,6 @@ using System.Net.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Microsoft.WindowsAzure.Storage;
@@ -13,7 +12,6 @@ using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Text;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using KokeiroLifeLogger.Utilities;
 
 namespace KokeiroLifeLogger
@@ -60,7 +58,7 @@ namespace KokeiroLifeLogger
 
         #region Output
 
-        public static async Task<string> GetData(DateTime from, DateTime to)
+        public static async Task<string> GetDataAsync(DateTime from, DateTime to)
         {
             var table = await GetCloudTableAsync();
 

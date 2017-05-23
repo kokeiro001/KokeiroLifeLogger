@@ -11,6 +11,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace KokeiroLifeLogger
 {
@@ -27,6 +28,7 @@ namespace KokeiroLifeLogger
             log.Info(jsonStr);
 
             var item = WeightMesurement.Parse(jsonStr);
+            item.InsertedTime = DateTime.Now;
 
             log.Info($"weight={item.Weight}, leanMass={item.LeanMass}, fatMass={item.FatMass}, fatPercent={item.FatPercent}, mesuredAt={item.MesuredAt}");
 
@@ -55,6 +57,38 @@ namespace KokeiroLifeLogger
             return table;
         }
 
+        public static async Task<string> GetDataAsync(DateTime from, DateTime to)
+        {
+            var table = await GetCloudTableAsync();
+
+            var propertyName = nameof(WeightMesurement.InsertedTime);
+            var filter1 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.GreaterThanOrEqual, from);
+            var filter2 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.LessThanOrEqual, to);
+
+            var finalFilter = TableQuery.CombineFilters(filter1, "and", filter2);
+
+            var query = new TableQuery<WeightMesurement>().Where(finalFilter);
+            var item = table.ExecuteQuery(query).FirstOrDefault();
+
+            var sb = new StringBuilder();
+            sb.AppendLine("-------------------------------------");
+
+            if (item != null)
+            {
+                sb.AppendLine($"体重:{item.Weight}kg");
+                sb.AppendLine($"除脂肪体重:{item.LeanMass}kg");
+                sb.AppendLine($"体脂肪量:{item.FatMass}kg");
+                sb.AppendLine($"体脂肪率:{item.FatPercent}%");
+            }
+            else
+            {
+                sb.AppendLine($"(今日は体重計乗ってないらしい)");
+            }
+
+            sb.AppendLine();
+            return sb.ToString();
+        }
+
         class WeightMesurement : TableEntity
         {
             public double Weight { get; set; }
@@ -62,6 +96,7 @@ namespace KokeiroLifeLogger
             public double FatMass { get; set; }
             public double FatPercent { get; set; }
             public DateTime MesuredAt { get; set; }
+            public DateTime InsertedTime { get; set; }
 
             public WeightMesurement() 
                 : base("WeightMesurement", DateTime.Now.Ticks.ToString())
