@@ -43,10 +43,10 @@ namespace KokeiroLifeLogger
                 InsertedTime = DateTime.Now,
             };
 
-            TableOperation insertOperation = TableOperation.Insert(entity);
+            var op = TableOperation.InsertOrReplace(entity);
             try
             {
-                await table.ExecuteAsync(insertOperation);
+                await table.ExecuteAsync(op);
                 return req.CreateResponse(HttpStatusCode.OK, $"Title={title} Url={url}");
             }
             catch (Exception e)
