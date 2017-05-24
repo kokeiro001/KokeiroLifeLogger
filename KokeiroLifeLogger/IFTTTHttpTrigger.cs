@@ -40,7 +40,7 @@ namespace KokeiroLifeLogger
             {
                 Title = title,
                 Url = url,
-                InsertedItme = DateTime.Now,
+                InsertedTime = DateTime.Now,
             };
 
             TableOperation insertOperation = TableOperation.Insert(entity);
@@ -62,14 +62,14 @@ namespace KokeiroLifeLogger
         {
             var table = await GetCloudTableAsync();
 
-            var propertyName = nameof(IFTTTEntity.InsertedItme);
+            var propertyName = nameof(IFTTTEntity.InsertedTime);
             var filter1 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.GreaterThanOrEqual, from);
             var filter2 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.LessThanOrEqual, to);
 
             var finalFilter = TableQuery.CombineFilters(filter1, "and", filter2);
 
             var query = new TableQuery<IFTTTEntity>().Where(finalFilter);
-            var items = table.ExecuteQuery(query).OrderBy(x => x.InsertedItme);
+            var items = table.ExecuteQuery(query).OrderBy(x => x.InsertedTime);
 
             var sb = new StringBuilder();
 
@@ -146,7 +146,7 @@ namespace KokeiroLifeLogger
     {
         public string Title { get; set; }
         public string Url { get; set; }
-        public DateTime InsertedItme { get; set; }
+        public DateTime InsertedTime { get; set; }
 
         public IFTTTEntity()
         {
