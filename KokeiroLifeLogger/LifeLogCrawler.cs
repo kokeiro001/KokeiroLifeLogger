@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KokeiroLifeLogger.Utilities;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,6 +27,7 @@ namespace KokeiroLifeLogger
 
             sb.AppendLine(await IFTTTHttpTrigger.GetDataAsync(from, to));
             sb.AppendLine(await WeightMeasurementTrigger.GetDataAsync(from, to));
+            sb.Append(await new BlogPvStringLoader().LoadAsync());
 
             return sb.ToString();
         }
