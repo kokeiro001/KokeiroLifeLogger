@@ -1,9 +1,10 @@
-﻿using KokeiroLifeLogger.Utilities;
+﻿using KokeiroLifeLogger.Functions;
+using KokeiroLifeLogger.Utilities;
 using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KokeiroLifeLogger
+namespace KokeiroLifeLogger.Utilities
 {
     class LifeLogCrawler
     {

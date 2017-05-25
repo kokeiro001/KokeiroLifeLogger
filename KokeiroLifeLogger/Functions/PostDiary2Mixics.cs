@@ -6,8 +6,9 @@ using System.Net;
 using System.Configuration;
 using Microsoft.Azure;
 using System.Threading.Tasks;
+using KokeiroLifeLogger.Utilities;
 
-namespace KokeiroLifeLogger
+namespace KokeiroLifeLogger.Functions
 {
     // 1日の区切りをAM5:00とした日記を自動投稿する.
     // 時差注意！

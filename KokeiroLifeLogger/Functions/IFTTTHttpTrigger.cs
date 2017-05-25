@@ -14,7 +14,7 @@ using System.Text;
 using System.Collections.Generic;
 using KokeiroLifeLogger.Utilities;
 
-namespace KokeiroLifeLogger
+namespace KokeiroLifeLogger.Functions
 {
     public static class IFTTTHttpTrigger
     {
@@ -56,6 +56,7 @@ namespace KokeiroLifeLogger
             }
         }
 
+        // TODO: 別のクラスに分離する
         #region Output
 
         public static async Task<string> GetDataAsync(DateTime from, DateTime to)

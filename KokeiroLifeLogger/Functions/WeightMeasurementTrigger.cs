@@ -13,7 +13,7 @@ using Microsoft.WindowsAzure.Storage;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace KokeiroLifeLogger
+namespace KokeiroLifeLogger.Functions
 {
     public static class WeightMeasurementTrigger
     {
@@ -57,6 +57,7 @@ namespace KokeiroLifeLogger
             return table;
         }
 
+        // TODO: 別のクラスに分離する
         public static async Task<string> GetDataAsync(DateTime from, DateTime to)
         {
             var table = await GetCloudTableAsync();
