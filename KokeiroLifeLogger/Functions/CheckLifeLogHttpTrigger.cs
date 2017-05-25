@@ -16,9 +16,17 @@ namespace KokeiroLifeLogger.Functions
         {
             log.Info("C# HTTP trigger function processed a request.");
 
-            var lifeLog = await new LifeLogCrawler().CrawlAsync();
-            var body = $"{lifeLog.Title}\n\n{lifeLog.Body}";
-            return req.CreateResponse(HttpStatusCode.OK, body);
+            try
+            {
+                var lifeLog = await new LifeLogCrawler().CrawlAsync();
+                var body = $"{lifeLog.Title}\n\n{lifeLog.Body}";
+                return req.CreateResponse(HttpStatusCode.OK, body);
+            }
+            catch (System.Exception e)
+            {
+                log.Exception(e);
+                throw;
+            }
         }
     }
 }
