@@ -40,7 +40,7 @@ namespace KokeiroLifeLogger
             {
                 Title = title,
                 Url = url,
-                InsertedTime = DateTime.Now,
+                InsertedTime = DateTime.UtcNow,
             };
 
             var op = TableOperation.InsertOrReplace(entity);

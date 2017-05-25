@@ -28,7 +28,7 @@ namespace KokeiroLifeLogger
             log.Info(jsonStr);
 
             var item = WeightMesurement.Parse(jsonStr);
-            item.InsertedTime = DateTime.Now;
+            item.InsertedTime = DateTime.UtcNow;
 
             log.Info($"weight={item.Weight}, leanMass={item.LeanMass}, fatMass={item.FatMass}, fatPercent={item.FatPercent}, mesuredAt={item.MesuredAt}");
 
@@ -99,7 +99,7 @@ namespace KokeiroLifeLogger
             public DateTime InsertedTime { get; set; }
 
             public WeightMesurement() 
-                : base("WeightMesurement", DateTime.Now.Ticks.ToString())
+                : base("WeightMesurement", DateTime.UtcNow.Ticks.ToString())
             {
             }
 
