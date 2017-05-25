@@ -2,7 +2,6 @@
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Microsoft.Azure;
-using Microsoft.WindowsAzure.Storage;
 using System;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -48,8 +47,7 @@ namespace KokeiroLifeLogger.Utilities
 
         async Task<byte[]> LoadApiKeyFileAsync()
         {
-            // TODO: あちこちでCloudStorageAccount作るから、Utilityに移す
-            var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("AzureWebJobsStorage"));
+            var storageAccount = CloudStorageAccountUtility.GetDefaultStorageAccount();
 
             var blobClient = storageAccount.CreateCloudBlobClient();
             var container = blobClient.GetContainerReference(KeyFileContainerName);

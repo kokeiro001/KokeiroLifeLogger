@@ -6,8 +6,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Text;
@@ -131,7 +129,7 @@ namespace KokeiroLifeLogger.Functions
 
         private static async Task<CloudTable> GetCloudTableAsync()
         {
-            var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("AzureWebJobsStorage"));
+            var storageAccount = CloudStorageAccountUtility.GetDefaultStorageAccount();
             var tableClient = storageAccount.CreateCloudTableClient();
             var table = tableClient.GetTableReference(TableName);
             await table.CreateIfNotExistsAsync();
