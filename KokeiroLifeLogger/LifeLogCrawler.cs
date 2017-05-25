@@ -13,9 +13,9 @@ namespace KokeiroLifeLogger
 
         private static async Task<string> GetBodyAsync()
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
-            var from = now.Date.AddDays(-1);
+            var from = now.AddDays(-1);
             var to = now;
 
             var sb = new StringBuilder();
