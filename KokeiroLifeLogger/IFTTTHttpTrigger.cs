@@ -73,9 +73,9 @@ namespace KokeiroLifeLogger
 
             var sb = new StringBuilder();
 
-            AppendStringByPartitionKey(items, sb, "pocket", "今日Pocketに突っ込んだ記事");
+            AppendStringByPartitionKey(items, sb, "pocket", "Pocketに突っ込んだ記事");
             AppendStringTwitterLiked(items, sb);
-            AppendStringByPartitionKey(items, sb, "github_star", "今日GitHubでStarつけたリポジトリ");
+            AppendStringByPartitionKey(items, sb, "github_star", "GitHubでStarつけたリポジトリ");
             return sb.ToString();
         }
 
@@ -104,7 +104,7 @@ namespace KokeiroLifeLogger
         private static void AppendStringTwitterLiked(IEnumerable<IFTTTEntity> items, StringBuilder sb)
         {
             sb.AppendLine("-------------------------------------");
-            sb.AppendLine("今日Twitterでイイねしたツイート");
+            sb.AppendLine("Twitterでイイねしたツイート");
             sb.AppendLine();
             var targetItems = items.Where(x => x.PartitionKey == "twitter_like").ToArray();
             if (targetItems.Length == 0)
