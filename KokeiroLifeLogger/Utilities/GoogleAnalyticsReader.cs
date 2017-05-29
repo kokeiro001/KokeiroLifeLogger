@@ -23,7 +23,11 @@ namespace KokeiroLifeLogger.Utilities
 
             var dateStr = date.ToString("yyyy-MM-dd");
             var data = await service.Data.Ga.Get("ga:" + viewId, dateStr, dateStr, "ga:pageviews").ExecuteAsync();
-            return int.Parse(data.Rows.First().First());
+            if (data.Rows != null)
+            {
+                return int.Parse(data.Rows.First().First());
+            }
+            return -1;
         }
 
         private async Task<AnalyticsService> CreateServiceAsync()
