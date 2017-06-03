@@ -11,6 +11,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using System.Text;
 using KokeiroLifeLogger.Utilities;
+using KokeiroLifeLogger.Common;
 
 namespace KokeiroLifeLogger.Functions
 {
@@ -42,7 +43,7 @@ namespace KokeiroLifeLogger.Functions
             }
             catch (Exception e)
             {
-                log.Error(e.Message + " " + e.StackTrace);
+                log.Exception(e);
                 throw;
             }
         }
@@ -113,7 +114,7 @@ namespace KokeiroLifeLogger.Functions
                     LeanMass = (double)json["LeanMassKg"],
                     FatMass = (double)json["FatMassKg"],
                     FatPercent = (double)json["FatPercent"],
-                    MesuredAt = DateTime.ParseExact((string)json["MeasuredAt"], "MMM dd, yyyy 'at' hh:mmtt", new System.Globalization.CultureInfo("en-US")),
+                    MesuredAt = DateTimeParser.ParseWithingsDate((string)json["MeasuredAt"]),
                 };
             }
         }

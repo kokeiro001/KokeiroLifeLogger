@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="IFTTTHttpTriggerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DateTimeParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
