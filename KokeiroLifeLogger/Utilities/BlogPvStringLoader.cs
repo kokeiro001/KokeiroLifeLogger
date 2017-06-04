@@ -19,7 +19,8 @@ namespace KokeiroLifeLogger.Utilities
             // TODO: 並列処理するようにする
             var pvReader = new GoogleAnalyticsReader();
 
-            var hatebuPv = await pvReader.ReadPv(CloudConfigurationManager.GetSetting("HatebuViewId"), date);
+            // はてブは１日前のデータはまだ取得できないので、更に前日のデータを取得する
+            var hatebuPv = await pvReader.ReadPv(CloudConfigurationManager.GetSetting("HatebuViewId"), date.AddDays(-1));
             sb.AppendLine($"はてなブログのPV数：{hatebuPv}");
 
             var qiitaPv = await pvReader.ReadPv(CloudConfigurationManager.GetSetting("QiitaViewId"), date);
