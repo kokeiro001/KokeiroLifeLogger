@@ -3,6 +3,7 @@
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.9.9" />
     <PackageReference Include="Google.Apis.Analytics.v3" Version="1.26.2.810" />
     <PackageReference Include="Microsoft.Azure.WebJobs" Version="2.1.0-beta1" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="2.1.0-beta1" />
