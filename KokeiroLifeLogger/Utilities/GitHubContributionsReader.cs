@@ -18,7 +18,7 @@ namespace KokeiroLifeLogger.Utilities
         public async Task<string> GetContributionsAsync(DateTime date, string username)
         {
             var sb = new StringBuilder();
-            sb.Append("-------------------------------------");
+            sb.AppendLine("-------------------------------------");
 
             try
             {
