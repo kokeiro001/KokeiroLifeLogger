@@ -26,6 +26,7 @@ namespace KokeiroLifeLogger.Utilities
                 var contribution = contoributions.First(x => x.Date == date.Date);
 
                 sb.AppendLine($"GitHubのコントリビューション数：{contribution.Contributions}");
+                sb.AppendLine($"TargetDate：{date}");
             }
             catch (Exception e)
             {
