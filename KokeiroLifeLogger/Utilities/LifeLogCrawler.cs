@@ -29,7 +29,7 @@ namespace KokeiroLifeLogger.Utilities
             sb.AppendLine(await IFTTTHttpTrigger.GetDataAsync(from, to));
             sb.AppendLine(await WeightMeasurementTrigger.GetDataAsync(from, to));
             sb.Append(await new BlogPvStringLoader().LoadAsync());
-            sb.Append(await new GitHubContributionsReader().GetContributionsAsync(from, "kokeiro001"));
+            sb.Append(await new GitHubContributionsReader().GetContributionsAsync(to, "kokeiro001"));
 
             return sb.ToString();
         }
