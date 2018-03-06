@@ -3,15 +3,15 @@
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AngleSharp" Version="0.9.9" />
-    <PackageReference Include="Google.Apis.Analytics.v3" Version="1.26.2.810" />
-    <PackageReference Include="Microsoft.Azure.WebJobs" Version="2.1.0-beta1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="2.1.0-beta1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="1.0.0-beta1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.ServiceBus" Version="2.1.0-beta1" />
+    <PackageReference Include="AngleSharp" Version="0.9.9.1" />
+    <PackageReference Include="Google.Apis.Analytics.v3" Version="1.32.2.1075" />
+    <PackageReference Include="Microsoft.Azure.WebJobs" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.ServiceBus" Version="2.1.0" />
     <PackageReference Include="Microsoft.WindowsAzure.ConfigurationManager" Version="3.2.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.0-alpha3" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.8" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
