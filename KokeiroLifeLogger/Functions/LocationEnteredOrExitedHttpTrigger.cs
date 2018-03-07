@@ -22,6 +22,7 @@ namespace KokeiroLifeLogger.Functions
 
             var jsonStr = await req.Content.ReadAsStringAsync();
             var json = JObject.Parse(jsonStr);
+            log.Info($"jsonStr={jsonStr}");
 
             var location = (string)json["location"];
             var enteredOrExited = (string)json["enteredOrExited"];
