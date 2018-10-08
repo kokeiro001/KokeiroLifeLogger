@@ -18,7 +18,6 @@ namespace KokeiroLifeLogger.Functions
         [FunctionName("PostDiary2Mixics")]
         public static async Task Run([TimerTrigger("0 0 20 * * *")]TimerInfo myTimer, TraceWriter log)
         {
-            log.Info($"C# Timer trigger function executed at: {DateTime.UtcNow}");
             var from = ConfigurationManager.AppSettings["MixiPostMail"];
             var to = ConfigurationManager.AppSettings["MixiPostMailTo"];
 

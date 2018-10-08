@@ -78,7 +78,7 @@ namespace KokeiroLifeLogger.Services
                     VideoId = x.ItemData.VideoId,
                     ViewCounter = x.ItemData.ViewCounter,
                     CommentCounter = x.ItemData.NumRes,
-                    MyListCounter = x.ItemData.MyListCounter,
+                    MyListCounter = x.ItemData.MylistCounter,
                     InsertedTime = now,
                 });
 
@@ -133,7 +133,7 @@ namespace KokeiroLifeLogger.Services
         public int FirstRetrieve { get; set; }
         public int UpdateTime { get; set; }
         public int ViewCounter { get; set; }
-        public int MyListCounter { get; set; }
+        public int MylistCounter { get; set; }
         public int NumRes { get; set; }
         public string GroupType { get; set; }
         public string LengthSeconds { get; set; }
