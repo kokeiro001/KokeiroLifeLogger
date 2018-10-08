@@ -81,4 +81,5 @@ namespace KokeiroLifeLogger.Functions
             }
         }
     }
+
 }
