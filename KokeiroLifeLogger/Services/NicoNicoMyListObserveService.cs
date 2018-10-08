@@ -69,7 +69,8 @@ namespace KokeiroLifeLogger.Services
 
         public async Task SaveMyListItems(IEnumerable<MyListItem> myListItems)
         {
-            var nowTicks = DateTime.UtcNow.Ticks;
+            var now = DateTime.UtcNow;
+            var nowTicks = now.Ticks;
             var entities = myListItems
                 .Select(x => new NicoNicoMyListEntity("niconico_mylist", $"{x.ItemData.VideoId}_{nowTicks}")
                 {
@@ -78,6 +79,7 @@ namespace KokeiroLifeLogger.Services
                     ViewCounter = x.ItemData.ViewCounter,
                     CommentCounter = x.ItemData.NumRes,
                     MyListCounter = x.ItemData.MyListCounter,
+                    InsertedTime = now,
                 });
 
             var table = await GetCloudTableAsync();
