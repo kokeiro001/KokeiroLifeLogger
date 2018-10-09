@@ -14,15 +14,12 @@ namespace KokeiroLifeLogger.Services
 
     public class LifeLogCrawler : ILifeLogCrawler
     {
-        private readonly ILogger logger;
         private readonly IBlogPvStringLoader blogPvStringLoader;
 
         public LifeLogCrawler(
-            ILogger logger,
             IBlogPvStringLoader blogPvStringLoader
         )
         {
-            this.logger = logger;
             this.blogPvStringLoader = blogPvStringLoader;
         }
 
@@ -53,7 +50,16 @@ namespace KokeiroLifeLogger.Services
             sb.AppendLine($"QiitaのPV数：{pvInfo.Qiita}");
             sb.AppendLine();
 
-            sb.Append(await new GitHubContributionsReader(logger).GetContributionsAsync(to, "kokeiro001"));
+            try
+            {
+                var github = await new GitHubContributionsReader().GetContributionsAsync(to, "kokeiro001");
+                sb.Append(github);
+            }
+            catch (Exception)
+            {
+                //logger.LogException(ex);
+                sb.AppendLine($"GitHubのコントリビューション数：(取得失敗)");
+            }
 
             return sb.ToString();
         }

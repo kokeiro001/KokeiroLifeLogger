@@ -23,14 +23,14 @@ namespace KokeiroLifeLogger.Functions
         public static async Task Run(
             [TimerTrigger("0 0 20 * * *")]TimerInfo myTimer, 
             ILogger logger,
-            [Inject]ILifeLogCrawler lifeLogCrawler
+            [Inject]ILifeLogCrawler lifeLogCrawler,
+            [Inject]IMailSender mailSender
         )
         {
             var from = ConfigurationManager.AppSettings["MixiPostMail"];
             var to = ConfigurationManager.AppSettings["MixiPostMailTo"];
 
             var lifeLog = await lifeLogCrawler.CrawlAsync();
-            var fromPassword = ConfigurationManager.AppSettings["MixiPostMailPassword"];
 
             var isLocal = CloudConfigurationManager.GetSetting("IsLocal");
             if (isLocal == "true")
@@ -38,21 +38,8 @@ namespace KokeiroLifeLogger.Functions
                 logger.LogInformation($"local running!!! skip SendMail. Title={lifeLog.Title}, Body={lifeLog.Body}");
                 return;
             }
-            SendMail(from, to, lifeLog.Title, lifeLog.Body, fromPassword);
-        }
 
-        private static void SendMail(string from, string to, string subject, string body, string fromPassword)
-        {
-            using (MailMessage msg = new MailMessage(from, to, subject, body))
-            using (SmtpClient sc = new SmtpClient())
-            {
-                sc.Host = "smtp.gmail.com";
-                sc.Port = 587;
-                sc.DeliveryMethod = SmtpDeliveryMethod.Network;
-                sc.Credentials = new NetworkCredential(from, fromPassword);
-                sc.EnableSsl = true;
-                sc.Send(msg);
-            }
+            mailSender.Send(to, lifeLog.Title, lifeLog.Body);
         }
     }
 }

@@ -3,6 +3,7 @@ using AzureFunctions.Autofac.Configuration;
 using KokeiroLifeLogger.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,12 +20,19 @@ namespace KokeiroLifeLogger
                 //builder.RegisterType<Sample>().As<ISample>();
                 builder.RegisterType<BlogPvStringLoader>().As<IBlogPvStringLoader>();
 
-                //Explicit registration
-                //builder.Register<ConnectionStringProvider>(c =>
-                //{
-                //    return new ConnectionStringProvider("ultra connection string");
-                //})
-                //.As<IConnectionStringProvider>();
+                builder.Register<LifeLogCrawler>(c =>
+                {
+                    return new LifeLogCrawler(c.Resolve<IBlogPvStringLoader>());
+                })
+                .As<ILifeLogCrawler>();
+
+                builder.Register<MailSender>(c =>
+                {
+                    var from = ConfigurationManager.AppSettings["MixiPostMail"];
+                    var password = ConfigurationManager.AppSettings["MixiPostMailPassword"];
+                    return new MailSender(from, password);
+                })
+                .As<ILifeLogCrawler>();
 
                 //Registration by autofac module
                 //builder.RegisterModule(new TestModule());

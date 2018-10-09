@@ -15,11 +15,8 @@ namespace KokeiroLifeLogger.Services
         static readonly string HostUrl = @"https://github.com/";
         static HttpClient httpClient = new HttpClient();
 
-        private readonly ILogger logger;
-
-        public GitHubContributionsReader(ILogger logger)
+        public GitHubContributionsReader()
         {
-            this.logger = logger;
         }
 
         public async Task<string> GetContributionsAsync(DateTime date, string username)
@@ -27,19 +24,11 @@ namespace KokeiroLifeLogger.Services
             var sb = new StringBuilder();
             sb.AppendLine("-------------------------------------");
 
-            try
-            {
-                var contoributions = await GetContributionsCoreAsync(username);
-                var contribution = contoributions.First(x => x.Date == date.Date);
+            var contoributions = await GetContributionsCoreAsync(username);
+            var contribution = contoributions.First(x => x.Date == date.Date);
 
-                sb.AppendLine($"GitHubのコントリビューション数：{contribution.Contributions}");
-                sb.AppendLine($"TargetDate：{date}");
-            }
-            catch (Exception ex)
-            {
-                logger.LogException(ex);
-                sb.AppendLine($"GitHubのコントリビューション数：(取得失敗)");
-            }
+            sb.AppendLine($"GitHubのコントリビューション数：{contribution.Contributions}");
+            sb.AppendLine($"TargetDate：{date}");
             sb.AppendLine();
 
             return sb.ToString();
