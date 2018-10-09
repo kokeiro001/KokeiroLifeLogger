@@ -48,7 +48,7 @@ namespace KokeiroLifeLogger.Functions
             return req.CreateResponse(HttpStatusCode.OK, $"Title={requestData.Title} Url={requestData.Url}");
         }
 
-        // TODO: 別のクラスに分離する
+        // TODO: 別のクラスに分離する. IFFFTRepository的なやつ。
         #region Output
 
         public static async Task<string> GetDataAsync(DateTime from, DateTime to)

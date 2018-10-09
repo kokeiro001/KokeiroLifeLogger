@@ -12,6 +12,15 @@ namespace KokeiroLifeLogger.Services
 
     public class BlogPvStringLoader : IBlogPvStringLoader
     {
+        private readonly string hatenaViewId;
+        private readonly string qiitaViewId;
+
+        public BlogPvStringLoader(string hatenaViewId, string qiitaViewId)
+        {
+            this.hatenaViewId = hatenaViewId;
+            this.qiitaViewId = qiitaViewId;
+        }
+
         public async Task<BlogPvInfo> LoadAsync()
         {
             var date = DateTime.UtcNow.AddHours(9).AddDays(-1);
@@ -21,9 +30,9 @@ namespace KokeiroLifeLogger.Services
             var result = new BlogPvInfo();
 
             // はてブは１日前のデータはまだ取得できないので、更に前日のデータを取得する
-            result.Hatena = await pvReader.ReadPv(CloudConfigurationManager.GetSetting("HatebuViewId"), date.AddDays(-1));
+            result.Hatena = await pvReader.ReadPv(hatenaViewId, date.AddDays(-1));
 
-            result.Qiita = await pvReader.ReadPv(CloudConfigurationManager.GetSetting("QiitaViewId"), date);
+            result.Qiita = await pvReader.ReadPv(qiitaViewId, date);
 
             return result;
         }

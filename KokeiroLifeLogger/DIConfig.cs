@@ -18,9 +18,15 @@ namespace KokeiroLifeLogger
         {
             DependencyInjection.Initialize(builder =>
             {
-                //Implicity registration
-                //builder.RegisterType<Sample>().As<ISample>();
-                builder.RegisterType<BlogPvStringLoader>().As<IBlogPvStringLoader>();
+                builder.Register<BlogPvStringLoader>(c =>
+                {
+                    return new BlogPvStringLoader(
+                        CloudConfigurationManager.GetSetting("HatebuViewId"),
+                        CloudConfigurationManager.GetSetting("QiitaViewId")
+                    );
+                })
+                .As<IBlogPvStringLoader>();
+
 
                 builder.Register<LifeLogCrawler>(c =>
                 {
@@ -34,8 +40,7 @@ namespace KokeiroLifeLogger
                     var password = ConfigurationManager.AppSettings["MixiPostMailPassword"];
                     return new MailSender(from, password);
                 })
-                .As<ILifeLogCrawler>();
-
+                .As<IMailSender>();
 
                 builder.Register<NicoNicoMyListObserveService>(c =>
                 {
