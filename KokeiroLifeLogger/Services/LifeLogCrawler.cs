@@ -37,7 +37,13 @@ namespace KokeiroLifeLogger.Services
 
             sb.AppendLine(await IFTTTHttpTrigger.GetDataAsync(from, to));
             sb.AppendLine(await WeightMeasurementTrigger.GetDataAsync(from, to));
-            sb.Append(await new BlogPvStringLoader().LoadAsync());
+
+            var pvInfo = await new BlogPvStringLoader().LoadAsync();
+            sb.AppendLine("-------------------------------------"); // TODO: このhrもUtilityから取得するようにする
+            sb.AppendLine($"はてなブログのPV数：{pvInfo.Hatena}");
+            sb.AppendLine($"QiitaのPV数：{pvInfo.Qiita}");
+            sb.AppendLine();
+
             sb.Append(await new GitHubContributionsReader(logger).GetContributionsAsync(to, "kokeiro001"));
 
             return sb.ToString();

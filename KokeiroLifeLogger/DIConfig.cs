@@ -9,7 +9,6 @@ namespace KokeiroLifeLogger
 {
     class DIConfig
     {
-
         public DIConfig(string functionName)
         {
             DependencyInjection.Initialize(builder =>

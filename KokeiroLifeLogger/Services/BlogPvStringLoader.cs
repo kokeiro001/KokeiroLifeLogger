@@ -5,29 +5,32 @@ using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services
 {
-    class BlogPvStringLoader
+    public interface IBlogPvStringLoader
     {
-        public async Task<string> LoadAsync()
+    }
+
+    public class BlogPvStringLoader : IBlogPvStringLoader
+    {
+        public async Task<BlogPvInfo> LoadAsync()
         {
             var date = DateTime.UtcNow.AddHours(9).AddDays(-1);
 
-
-            var sb = new StringBuilder();
-
-            sb.AppendLine("-------------------------------------"); // TODO: このhrもUtilityから取得するようにする
-
-            // TODO: 並列処理するようにする
             var pvReader = new GoogleAnalyticsReader();
 
-            // はてブは１日前のデータはまだ取得できないので、更に前日のデータを取得する
-            var hatebuPv = await pvReader.ReadPv(CloudConfigurationManager.GetSetting("HatebuViewId"), date.AddDays(-1));
-            sb.AppendLine($"はてなブログのPV数：{hatebuPv}");
+            var result = new BlogPvInfo();
 
-            var qiitaPv = await pvReader.ReadPv(CloudConfigurationManager.GetSetting("QiitaViewId"), date);
-            sb.AppendLine($"QiitaのPV数：{qiitaPv}");
-            sb.AppendLine();
-            
-            return sb.ToString();
+            // はてブは１日前のデータはまだ取得できないので、更に前日のデータを取得する
+            result.Hatena = await pvReader.ReadPv(CloudConfigurationManager.GetSetting("HatebuViewId"), date.AddDays(-1));
+
+            result.Qiita = await pvReader.ReadPv(CloudConfigurationManager.GetSetting("QiitaViewId"), date);
+
+            return result;
         }
+    }
+
+    public class BlogPvInfo
+    {
+        public int Hatena { get; set; }
+        public int Qiita { get; set; }
     }
 }
