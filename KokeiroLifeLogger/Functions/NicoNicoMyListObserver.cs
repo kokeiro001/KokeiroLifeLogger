@@ -15,7 +15,7 @@ namespace KokeiroLifeLogger.Functions
         public static async Task Run([TimerTrigger("0 0 15 * * *")]TimerInfo myTimer, TraceWriter log)
         {
             var myListId = 63412739;
-            log.Info($"C# Timer trigger function executed at: {DateTime.Now}");
+            log.Info($"C# Timer trigger function executed at: {DateTime.UtcNow}");
 
             //var storageAccount = CloudStorageAccountUtility.GetDefaultStorageAccount();
 
@@ -34,7 +34,7 @@ namespace KokeiroLifeLogger.Functions
             log.Info("SaveMyListItems");
             await service.SaveMyListItems(myListItems);
 
-            log.Info($"function finished: {DateTime.Now}");
+            log.Info($"function finished: {DateTime.UtcNow}");
         }
     }
 }
