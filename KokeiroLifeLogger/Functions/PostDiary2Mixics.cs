@@ -8,6 +8,7 @@ using Microsoft.Azure;
 using System.Threading.Tasks;
 using KokeiroLifeLogger.Utilities;
 using KokeiroLifeLogger.Services;
+using Microsoft.Extensions.Logging;
 
 namespace KokeiroLifeLogger.Functions
 {
@@ -17,19 +18,22 @@ namespace KokeiroLifeLogger.Functions
     public static class PostDiary2Mixics
     {
         [FunctionName("PostDiary2Mixics")]
-        public static async Task Run([TimerTrigger("0 0 20 * * *")]TimerInfo myTimer, TraceWriter log)
+        public static async Task Run(
+            [TimerTrigger("0 0 20 * * *")]TimerInfo myTimer, 
+            ILogger logger
+        )
         {
             var from = ConfigurationManager.AppSettings["MixiPostMail"];
             var to = ConfigurationManager.AppSettings["MixiPostMailTo"];
 
-            var crawler = new LifeLogCrawler();
+            var crawler = new LifeLogCrawler(logger);
             var lifeLog = await crawler.CrawlAsync();
             var fromPassword = ConfigurationManager.AppSettings["MixiPostMailPassword"];
 
             var isLocal = CloudConfigurationManager.GetSetting("IsLocal");
             if (isLocal == "true")
             {
-                log.Info($"local running!!! skip SendMail. Title={lifeLog.Title}, Body={lifeLog.Body}");
+                logger.LogInformation($"local running!!! skip SendMail. Title={lifeLog.Title}, Body={lifeLog.Body}");
                 return;
             }
             SendMail(from, to, lifeLog.Title, lifeLog.Body, fromPassword);

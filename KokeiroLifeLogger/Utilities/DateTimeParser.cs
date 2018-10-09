@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KokeiroLifeLogger.Common
+namespace KokeiroLifeLogger.Utilities
 {
     public static class DateTimeParser
     {

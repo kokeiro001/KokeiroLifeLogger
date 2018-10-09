@@ -6,6 +6,7 @@ using KokeiroLifeLogger.Utilities;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json.Linq;
 
@@ -16,18 +17,19 @@ namespace KokeiroLifeLogger.Functions
         public static string TableName = @"locationEnteredOrExited";
 
         [FunctionName("LocationEnteredOrExitedHttpTrigger")]
-        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "location")]HttpRequestMessage req, TraceWriter log)
+        public static async Task<HttpResponseMessage> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "location")]HttpRequestMessage req,
+            ILogger logger
+        )
         {
-            log.Info("C# HTTP trigger function processed a request.");
-
             var jsonStr = await req.Content.ReadAsStringAsync();
             var json = JObject.Parse(jsonStr);
-            log.Info($"jsonStr={jsonStr}");
+            logger.LogInformation($"jsonStr={jsonStr}");
 
             var location = (string)json["location"];
             var enteredOrExited = (string)json["enteredOrExited"];
 
-            log.Info($"location={location}, enteredOrExited={enteredOrExited}");
+            logger.LogInformation($"location={location}, enteredOrExited={enteredOrExited}");
 
             var table = await GetCloudTableAsync();
 
@@ -41,16 +43,8 @@ namespace KokeiroLifeLogger.Functions
             };
 
             var op = TableOperation.InsertOrReplace(entity);
-            try
-            {
-                await table.ExecuteAsync(op);
-                return req.CreateResponse(HttpStatusCode.OK, $"Location={location} EnteredOrExited={enteredOrExited}");
-            }
-            catch (Exception e)
-            {
-                log.Error(e.Message + " " + e.StackTrace);
-                throw;
-            }
+            await table.ExecuteAsync(op);
+            return req.CreateResponse(HttpStatusCode.OK, $"Location={location} EnteredOrExited={enteredOrExited}");
         }
 
         private static async Task<CloudTable> GetCloudTableAsync()

@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using KokeiroLifeLogger.Common;
+using KokeiroLifeLogger.Utilities;
 
 namespace KokeiroLifeLogger.Test
 {

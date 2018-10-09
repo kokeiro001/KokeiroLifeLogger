@@ -11,7 +11,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using System.Text;
 using KokeiroLifeLogger.Utilities;
-using KokeiroLifeLogger.Common;
+using Microsoft.Extensions.Logging;
 
 namespace KokeiroLifeLogger.Functions
 {
@@ -20,32 +20,25 @@ namespace KokeiroLifeLogger.Functions
         public static string TableName = @"weightmeasurement";
 
         [FunctionName("WeightMeasurementTrigger")]
-        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "bodymesurement")]HttpRequestMessage req, TraceWriter log)
+        public static async Task<HttpResponseMessage> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "bodymesurement")]HttpRequestMessage req,
+            ILogger logger
+        )
         {
-            log.Info("C# HTTP trigger function processed a request.");
-
             var jsonStr = await req.Content.ReadAsStringAsync();
-            log.Info(jsonStr);
+            logger.LogInformation(jsonStr);
 
             var item = WeightMesurement.Parse(jsonStr);
             item.InsertedTime = DateTime.UtcNow;
 
-            log.Info($"weight={item.Weight}, leanMass={item.LeanMass}, fatMass={item.FatMass}, fatPercent={item.FatPercent}, mesuredAt={item.MesuredAt}");
+            logger.LogInformation($"weight={item.Weight}, leanMass={item.LeanMass}, fatMass={item.FatMass}, fatPercent={item.FatPercent}, mesuredAt={item.MesuredAt}");
 
             var table = await GetCloudTableAsync();
 
             var op = TableOperation.Insert(item);
 
-            try
-            {
-                await table.ExecuteAsync(op);
-                return req.CreateResponse(HttpStatusCode.OK,  JsonConvert.SerializeObject(item));
-            }
-            catch (Exception e)
-            {
-                log.Exception(e);
-                throw;
-            }
+            await table.ExecuteAsync(op);
+            return req.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(item));
         }
 
         private static async Task<CloudTable> GetCloudTableAsync()

@@ -11,6 +11,7 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 using KokeiroLifeLogger.Utilities;
+using Microsoft.Extensions.Logging;
 
 namespace KokeiroLifeLogger.Functions
 {
@@ -19,10 +20,11 @@ namespace KokeiroLifeLogger.Functions
         public static string TableName = @"ifttt";
 
         [FunctionName("IFTTTHttpTrigger")]
-        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "ifttt")]HttpRequestMessage req, TraceWriter log)
+        public static async Task<HttpResponseMessage> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "ifttt")]HttpRequestMessage req, 
+            ILogger logger
+        )
         {
-            log.Info("C# HTTP trigger function processed a request.");
-
             var jsonStr = await req.Content.ReadAsStringAsync();
             var json = JObject.Parse(jsonStr);
 
@@ -30,7 +32,7 @@ namespace KokeiroLifeLogger.Functions
             var url = (string)json["url"];
             var from = (string)json["from"];
 
-            log.Info($"title={title}, url={url}, from={from}");
+            logger.LogInformation($"title={title}, url={url}, from={from}");
 
             var table = await GetCloudTableAsync();
 
@@ -49,7 +51,7 @@ namespace KokeiroLifeLogger.Functions
             }
             catch (Exception e)
             {
-                log.Error(e.Message + " " + e.StackTrace);
+                logger.LogException(e);
                 throw;
             }
         }

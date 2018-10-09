@@ -5,16 +5,22 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Parser.Html;
-using KokeiroLifeLogger.Common;
 using KokeiroLifeLogger.Utilities;
+using Microsoft.Extensions.Logging;
 
 namespace KokeiroLifeLogger.Services
 {
     class GitHubContributionsReader
     {
         static readonly string HostUrl = @"https://github.com/";
-
         static HttpClient httpClient = new HttpClient();
+
+        private readonly ILogger logger;
+
+        public GitHubContributionsReader(ILogger logger)
+        {
+            this.logger = logger;
+        }
 
         public async Task<string> GetContributionsAsync(DateTime date, string username)
         {
@@ -29,9 +35,9 @@ namespace KokeiroLifeLogger.Services
                 sb.AppendLine($"GitHubのコントリビューション数：{contribution.Contributions}");
                 sb.AppendLine($"TargetDate：{date}");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                AzureFunctionLogger.Logger.Exception(e);
+                logger.LogException(ex);
                 sb.AppendLine($"GitHubのコントリビューション数：(取得失敗)");
             }
             sb.AppendLine();

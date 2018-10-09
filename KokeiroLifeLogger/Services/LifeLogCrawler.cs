@@ -1,5 +1,6 @@
 ﻿using KokeiroLifeLogger.Functions;
 using KokeiroLifeLogger.Utilities;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,12 +9,20 @@ namespace KokeiroLifeLogger.Services
 {
     class LifeLogCrawler
     {
-        private static string GetTitle()
+        private readonly ILogger logger;
+
+        public LifeLogCrawler(ILogger logger)
+        {
+            this.logger = logger;
+        }
+
+
+        private string GetTitle()
         {
             return DateTime.UtcNow.Date.ToString("yyyyMMdd") + "のライフログ";
         }
 
-        private static async Task<string> GetBodyAsync()
+        private async Task<string> GetBodyAsync()
         {
             var now = DateTime.UtcNow;
 
@@ -29,7 +38,7 @@ namespace KokeiroLifeLogger.Services
             sb.AppendLine(await IFTTTHttpTrigger.GetDataAsync(from, to));
             sb.AppendLine(await WeightMeasurementTrigger.GetDataAsync(from, to));
             sb.Append(await new BlogPvStringLoader().LoadAsync());
-            sb.Append(await new GitHubContributionsReader().GetContributionsAsync(to, "kokeiro001"));
+            sb.Append(await new GitHubContributionsReader(logger).GetContributionsAsync(to, "kokeiro001"));
 
             return sb.ToString();
         }
