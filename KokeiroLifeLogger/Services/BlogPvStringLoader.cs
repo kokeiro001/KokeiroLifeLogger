@@ -7,6 +7,7 @@ namespace KokeiroLifeLogger.Services
 {
     public interface IBlogPvStringLoader
     {
+        Task<BlogPvInfo> LoadAsync();
     }
 
     public class BlogPvStringLoader : IBlogPvStringLoader

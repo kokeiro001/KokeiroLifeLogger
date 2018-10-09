@@ -1,4 +1,6 @@
-﻿using AzureFunctions.Autofac.Configuration;
+﻿using Autofac;
+using AzureFunctions.Autofac.Configuration;
+using KokeiroLifeLogger.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,7 @@ namespace KokeiroLifeLogger
             {
                 //Implicity registration
                 //builder.RegisterType<Sample>().As<ISample>();
+                builder.RegisterType<BlogPvStringLoader>().As<IBlogPvStringLoader>();
 
                 //Explicit registration
                 //builder.Register<ConnectionStringProvider>(c =>

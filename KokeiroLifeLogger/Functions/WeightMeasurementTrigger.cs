@@ -12,9 +12,11 @@ using Newtonsoft.Json;
 using System.Text;
 using KokeiroLifeLogger.Utilities;
 using Microsoft.Extensions.Logging;
+using AzureFunctions.Autofac;
 
 namespace KokeiroLifeLogger.Functions
 {
+    [DependencyInjectionConfig(typeof(DIConfig))]
     public static class WeightMeasurementTrigger
     {
         public static string TableName = @"weightmeasurement";

@@ -12,9 +12,11 @@ using System.Text;
 using System.Collections.Generic;
 using KokeiroLifeLogger.Utilities;
 using Microsoft.Extensions.Logging;
+using AzureFunctions.Autofac;
 
 namespace KokeiroLifeLogger.Functions
 {
+    [DependencyInjectionConfig(typeof(DIConfig))]
     public static class IFTTTHttpTrigger
     {
         public static string TableName = @"ifttt";

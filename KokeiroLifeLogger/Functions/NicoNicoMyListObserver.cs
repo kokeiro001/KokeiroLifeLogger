@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using AzureFunctions.Autofac;
 using KokeiroLifeLogger.Services;
 using KokeiroLifeLogger.Utilities;
 using Microsoft.Azure;
@@ -10,6 +11,7 @@ using Microsoft.WindowsAzure.Storage;
 
 namespace KokeiroLifeLogger.Functions
 {
+    [DependencyInjectionConfig(typeof(DIConfig))]
     public static class NicoNicoMyListObserver
     {
         [FunctionName("NicoNicoMyListObserver")]

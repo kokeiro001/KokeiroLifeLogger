@@ -7,15 +7,24 @@ using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services
 {
-    class LifeLogCrawler
+    public interface ILifeLogCrawler
+    {
+        Task<LifeLog> CrawlAsync();
+    }
+
+    public class LifeLogCrawler : ILifeLogCrawler
     {
         private readonly ILogger logger;
+        private readonly IBlogPvStringLoader blogPvStringLoader;
 
-        public LifeLogCrawler(ILogger logger)
+        public LifeLogCrawler(
+            ILogger logger,
+            IBlogPvStringLoader blogPvStringLoader
+        )
         {
             this.logger = logger;
+            this.blogPvStringLoader = blogPvStringLoader;
         }
-
 
         private string GetTitle()
         {
@@ -38,7 +47,7 @@ namespace KokeiroLifeLogger.Services
             sb.AppendLine(await IFTTTHttpTrigger.GetDataAsync(from, to));
             sb.AppendLine(await WeightMeasurementTrigger.GetDataAsync(from, to));
 
-            var pvInfo = await new BlogPvStringLoader().LoadAsync();
+            var pvInfo = await blogPvStringLoader.LoadAsync();
             sb.AppendLine("-------------------------------------"); // TODO: このhrもUtilityから取得するようにする
             sb.AppendLine($"はてなブログのPV数：{pvInfo.Hatena}");
             sb.AppendLine($"QiitaのPV数：{pvInfo.Qiita}");
@@ -59,7 +68,7 @@ namespace KokeiroLifeLogger.Services
         }
     }
 
-    class LifeLog
+    public class LifeLog
     {
         public string Title;
         public string Body;

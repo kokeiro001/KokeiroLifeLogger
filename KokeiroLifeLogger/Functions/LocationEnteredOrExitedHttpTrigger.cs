@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AzureFunctions.Autofac;
 using KokeiroLifeLogger.Utilities;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -12,6 +13,7 @@ using Newtonsoft.Json.Linq;
 
 namespace KokeiroLifeLogger.Functions
 {
+    [DependencyInjectionConfig(typeof(DIConfig))]
     public static class LocationEnteredOrExitedHttpTrigger
     {
         public static string TableName = @"locationEnteredOrExited";
