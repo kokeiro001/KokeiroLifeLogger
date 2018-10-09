@@ -27,6 +27,7 @@ namespace KokeiroLifeLogger.Functions
             [Inject]IMailSender mailSender
         )
         {
+            // TODO: これもBinderに移したい
             var from = ConfigurationManager.AppSettings["MixiPostMail"];
             var to = ConfigurationManager.AppSettings["MixiPostMailTo"];
 

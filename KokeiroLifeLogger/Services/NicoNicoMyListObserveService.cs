@@ -13,7 +13,13 @@ using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services
 {
-    public class NicoNicoMyListObserveService
+    public interface INicoNicoMyListObserveService
+    {
+        Task<MyListItem[]> GetMyListItems(int myListId);
+        Task SaveMyListItems(IEnumerable<MyListItem> myListItems);
+    }
+
+    public class NicoNicoMyListObserveService : INicoNicoMyListObserveService
     {
         public static string TableName = @"nicoNicoMyList";
 

@@ -17,26 +17,19 @@ namespace KokeiroLifeLogger.Functions
         [FunctionName("NicoNicoMyListObserver")]
         public static async Task Run(
             [TimerTrigger("0 0 15 * * *")]TimerInfo myTimer, 
-            ILogger logger
+            ILogger logger,
+            [Inject]INicoNicoMyListObserveService nicoNicoMyListObserveService
         )
         {
             var myListId = 63412739;
-            //var storageAccount = CloudStorageAccountUtility.GetDefaultStorageAccount();
-
-            logger.LogInformation("get connection string");
-            var connectionString = CloudConfigurationManager.GetSetting("AzureWebJobsStorage");
-
-            logger.LogInformation("get connection string");
-            var storageAccount = CloudStorageAccount.Parse(connectionString);
 
             logger.LogInformation("new service");
-            var service = new NicoNicoMyListObserveService(storageAccount);
 
             logger.LogInformation("GetMyListItems");
-            var myListItems = await service.GetMyListItems(myListId);
+            var myListItems = await nicoNicoMyListObserveService.GetMyListItems(myListId);
 
             logger.LogInformation("SaveMyListItems");
-            await service.SaveMyListItems(myListItems);
+            await nicoNicoMyListObserveService.SaveMyListItems(myListItems);
 
             logger.LogInformation($"function finished: {DateTime.UtcNow}");
         }

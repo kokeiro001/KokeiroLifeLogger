@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using AzureFunctions.Autofac.Configuration;
 using KokeiroLifeLogger.Services;
+using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -33,6 +35,20 @@ namespace KokeiroLifeLogger
                     return new MailSender(from, password);
                 })
                 .As<ILifeLogCrawler>();
+
+
+                builder.Register<NicoNicoMyListObserveService>(c =>
+                {
+                    var connectionString = CloudConfigurationManager.GetSetting("AzureWebJobsStorage");
+                    var storageAccount = CloudStorageAccount.Parse(connectionString);
+
+                    return new NicoNicoMyListObserveService(storageAccount);
+                })
+                .As<INicoNicoMyListObserveService>();
+
+
+                //builder.RegisterType<Thing1>().Named<IThing>("OptionA");
+                //builder.RegisterType<Thing2>().Named<IThing>("OptionB");
 
                 //Registration by autofac module
                 //builder.RegisterModule(new TestModule());

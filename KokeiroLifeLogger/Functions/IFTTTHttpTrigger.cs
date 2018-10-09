@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using KokeiroLifeLogger.Utilities;
 using Microsoft.Extensions.Logging;
 using AzureFunctions.Autofac;
+using Newtonsoft.Json;
 
 namespace KokeiroLifeLogger.Functions
 {
@@ -23,39 +24,28 @@ namespace KokeiroLifeLogger.Functions
 
         [FunctionName("IFTTTHttpTrigger")]
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "ifttt")]HttpRequestMessage req, 
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "ifttt")]HttpRequestMessage req,
             ILogger logger
         )
         {
-            var jsonStr = await req.Content.ReadAsStringAsync();
-            var json = JObject.Parse(jsonStr);
+            var json = await req.Content.ReadAsStringAsync();
 
-            var title = (string)json["title"];
-            var url = (string)json["url"];
-            var from = (string)json["from"];
+            var requestData = JsonConvert.DeserializeObject<IFFFTRequestData>(json);
 
-            logger.LogInformation($"title={title}, url={url}, from={from}");
+            logger.LogInformation($"title={requestData.Title}, url={requestData.Url}, from={requestData.From}");
 
             var table = await GetCloudTableAsync();
 
-            var entity = new IFTTTEntity(from, url.GetHashCode().ToString())
+            var entity = new IFTTTEntity(requestData.From, requestData.Url.GetHashCode().ToString())
             {
-                Title = title,
-                Url = url,
+                Title = requestData.Title,
+                Url = requestData.Url,
                 InsertedTime = DateTime.UtcNow,
             };
 
             var op = TableOperation.InsertOrReplace(entity);
-            try
-            {
-                await table.ExecuteAsync(op);
-                return req.CreateResponse(HttpStatusCode.OK, $"Title={title} Url={url}");
-            }
-            catch (Exception e)
-            {
-                logger.LogException(e);
-                throw;
-            }
+            await table.ExecuteAsync(op);
+            return req.CreateResponse(HttpStatusCode.OK, $"Title={requestData.Title} Url={requestData.Url}");
         }
 
         // TODO: 別のクラスに分離する
@@ -143,6 +133,13 @@ namespace KokeiroLifeLogger.Functions
         #endregion
 
 
+    }
+
+    public class IFFFTRequestData
+    {
+        public string Title { get; set; }
+        public string Url { get; set; }
+        public string From { get; set; }
     }
 
     public class IFTTTEntity: TableEntity
