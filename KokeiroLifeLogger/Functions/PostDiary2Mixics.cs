@@ -7,6 +7,7 @@ using System.Configuration;
 using Microsoft.Azure;
 using System.Threading.Tasks;
 using KokeiroLifeLogger.Utilities;
+using KokeiroLifeLogger.Services;
 
 namespace KokeiroLifeLogger.Functions
 {

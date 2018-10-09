@@ -4,7 +4,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KokeiroLifeLogger.Utilities
+namespace KokeiroLifeLogger.Services
 {
     class LifeLogCrawler
     {

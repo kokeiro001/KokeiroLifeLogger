@@ -1,13 +1,14 @@
 ﻿using Google.Apis.Analytics.v3;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
+using KokeiroLifeLogger.Utilities;
 using Microsoft.Azure;
 using System;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
-namespace KokeiroLifeLogger.Utilities
+namespace KokeiroLifeLogger.Services
 {
     class GoogleAnalyticsReader
     {

@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Parser.Html;
 using KokeiroLifeLogger.Common;
+using KokeiroLifeLogger.Utilities;
 
-namespace KokeiroLifeLogger.Utilities
+namespace KokeiroLifeLogger.Services
 {
     class GitHubContributionsReader
     {
