@@ -47,7 +47,8 @@ namespace KokeiroLifeLogger.Repository
 
     public class WeightMeasurementRepository : StorageTableRepository<WeightMesurementEntity>, IWeightMeasurementRepository
     {
-        public WeightMeasurementRepository(CloudStorageAccount cloudStorageAccount, string tableName) : base(cloudStorageAccount, tableName)
+        public WeightMeasurementRepository(CloudStorageAccount cloudStorageAccount) 
+            : base(cloudStorageAccount, @"weightmeasurement")
         {
         }
 
