@@ -1,10 +1,5 @@
-﻿using AzureFunctions.Autofac;
-using KokeiroLifeLogger.Functions;
-using KokeiroLifeLogger.Repository;
+﻿using KokeiroLifeLogger.Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services

@@ -1,15 +1,12 @@
 ﻿using AngleSharp.Parser.Html;
 using KokeiroLifeLogger.Repository;
 using KokeiroLifeLogger.Utilities;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services

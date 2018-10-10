@@ -1,6 +1,4 @@
-﻿using Microsoft.Azure;
-using System;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services

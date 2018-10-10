@@ -5,8 +5,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using AngleSharp.Parser.Html;
-using KokeiroLifeLogger.Utilities;
-using Microsoft.Extensions.Logging;
 
 namespace KokeiroLifeLogger.Services
 {
