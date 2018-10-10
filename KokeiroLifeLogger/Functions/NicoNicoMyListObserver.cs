@@ -29,7 +29,7 @@ namespace KokeiroLifeLogger.Functions
             var myListItems = await nicoNicoMyListObserveService.GetMyListItems(myListId);
 
             logger.LogInformation("SaveMyListItems");
-            await nicoNicoMyListObserveService.SaveMyListItems(myListItems);
+            await nicoNicoMyListObserveService.AddAsync(myListItems);
 
             logger.LogInformation($"function finished: {DateTime.UtcNow}");
         }

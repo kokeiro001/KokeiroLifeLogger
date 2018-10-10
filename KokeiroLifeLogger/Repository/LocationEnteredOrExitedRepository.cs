@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using KokeiroLifeLogger.Services;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Collections.Generic;
@@ -34,8 +35,8 @@ namespace KokeiroLifeLogger.Repository
 
     class LocationEnteredOrExitedRepository : StorageTableRepository<LocationEnteredOrExitedEntity>, ILocationEnteredOrExitedRepository
     {
-        public LocationEnteredOrExitedRepository(CloudStorageAccount cloudStorageAccount) 
-            : base(cloudStorageAccount, "locationEnteredOrExited")
+        public LocationEnteredOrExitedRepository(ICloudStorageAccountProvider cloudStorageAccountProvider) 
+            : base(cloudStorageAccountProvider.GetCloudStorageAccount(), "locationEnteredOrExited")
         {
         }
     }

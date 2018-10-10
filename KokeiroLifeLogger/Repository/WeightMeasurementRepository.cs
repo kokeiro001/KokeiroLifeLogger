@@ -1,4 +1,5 @@
-﻿using KokeiroLifeLogger.Utilities;
+﻿using KokeiroLifeLogger.Services;
+using KokeiroLifeLogger.Utilities;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json.Linq;
@@ -10,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Repository
 {
-
     public class WeightMesurementEntity : TableEntity
     {
         public double Weight { get; set; }
@@ -47,8 +47,8 @@ namespace KokeiroLifeLogger.Repository
 
     public class WeightMeasurementRepository : StorageTableRepository<WeightMesurementEntity>, IWeightMeasurementRepository
     {
-        public WeightMeasurementRepository(CloudStorageAccount cloudStorageAccount) 
-            : base(cloudStorageAccount, @"weightmeasurement")
+        public WeightMeasurementRepository(ICloudStorageAccountProvider cloudStorageAccountProvider) 
+            : base(cloudStorageAccountProvider.GetCloudStorageAccount(), @"weightmeasurement")
         {
         }
 

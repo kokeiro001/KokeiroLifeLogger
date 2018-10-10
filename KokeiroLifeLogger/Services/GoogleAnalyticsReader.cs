@@ -10,7 +10,12 @@ using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services
 {
-    class GoogleAnalyticsReader
+    public interface IGoogleAnalyticsReader
+    {
+        Task<int> ReadPv(string viewId, DateTime date);
+    }
+
+    public class GoogleAnalyticsReader : IGoogleAnalyticsReader
     {
         static readonly string AppName = @"KokeiroLifeLogger";
         static readonly string KeyFileContainerName = @"etc";

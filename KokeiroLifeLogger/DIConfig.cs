@@ -29,19 +29,28 @@ namespace KokeiroLifeLogger
                 .As<ICloudStorageAccountProvider>();
 
                 builder.RegisterType<IFTTTRepository>().As<IIFTTTRepository>();
+                builder.RegisterType<LocationEnteredOrExitedRepository>().As<ILocationEnteredOrExitedRepository>();
+                builder.RegisterType<WeightMeasurementRepository>().As<IWeightMeasurementRepository>();
 
 
                 builder.Register<BlogPvStringLoader>(c =>
                 {
                     return new BlogPvStringLoader(
                         CloudConfigurationManager.GetSetting("HatebuViewId"),
-                        CloudConfigurationManager.GetSetting("QiitaViewId")
+                        CloudConfigurationManager.GetSetting("QiitaViewId"),
+                        c.Resolve<IGoogleAnalyticsReader>()
                     );
                 })
                 .As<IBlogPvStringLoader>();
 
-
+                builder.RegisterType<GitHubContributionsReader>().As<IGitHubContributionsReader>();
+                builder.RegisterType<GoogleAnalyticsReader>().As<IGoogleAnalyticsReader>();
                 builder.RegisterType<LifeLogCrawler>().As<ILifeLogCrawler>();
+                builder.RegisterType<IFTTTService>().As<IIFTTTService>();
+                builder.RegisterType<LifeLogCrawler>().As<ILifeLogCrawler>();
+                builder.RegisterType<LocationEnteredOrExitedService>().As<ILocationEnteredOrExitedService>();
+                builder.RegisterType<NicoNicoMyListObserveService>().As<INicoNicoMyListObserveService>();
+                builder.RegisterType<WeightMeasurementService>().As<>(IWeightMeasurementService);
 
                 builder.Register<MailSender>(c =>
                 {
@@ -51,24 +60,6 @@ namespace KokeiroLifeLogger
                 })
                 .As<IMailSender>();
 
-                builder.Register<NicoNicoMyListObserveService>(c =>
-                {
-                    var connectionString = CloudConfigurationManager.GetSetting("AzureWebJobsStorage");
-                    var storageAccount = CloudStorageAccount.Parse(connectionString);
-
-                    return new NicoNicoMyListObserveService(storageAccount);
-                })
-                .As<INicoNicoMyListObserveService>();
-
-
-                //builder.RegisterType<Thing1>().Named<IThing>("OptionA");
-                //builder.RegisterType<Thing2>().Named<IThing>("OptionB");
-
-                //Registration by autofac module
-                //builder.RegisterModule(new TestModule());
-                //Named Instances are supported
-                //builder.RegisterType<Thing1>().Named<IThing>("OptionA");
-                //builder.RegisterType<Thing2>().Named<IThing>("OptionB");
             }, functionName);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using KokeiroLifeLogger.Functions;
+using KokeiroLifeLogger.Services;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
@@ -33,8 +34,8 @@ namespace KokeiroLifeLogger.Repository
 
     public class IFTTTRepository : StorageTableRepository<IFTTTEntity>, IIFTTTRepository
     {
-        public IFTTTRepository(CloudStorageAccount cloudStorageAccount)
-            : base(cloudStorageAccount, "ifttt")
+        public IFTTTRepository(ICloudStorageAccountProvider cloudStorageAccountProvider)
+            : base(cloudStorageAccountProvider.GetCloudStorageAccount(), "ifttt")
         {
         }
 

@@ -19,8 +19,6 @@ namespace KokeiroLifeLogger.Functions
     [DependencyInjectionConfig(typeof(DIConfig))]
     public static class LocationEnteredOrExitedHttpTrigger
     {
-        public static string TableName = @"locationEnteredOrExited";
-
         [FunctionName("LocationEnteredOrExitedHttpTrigger")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "location")]HttpRequestMessage req,

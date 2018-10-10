@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Parser.Html;
+using KokeiroLifeLogger.Repository;
 using KokeiroLifeLogger.Utilities;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -16,18 +17,16 @@ namespace KokeiroLifeLogger.Services
     public interface INicoNicoMyListObserveService
     {
         Task<MyListItem[]> GetMyListItems(int myListId);
-        Task SaveMyListItems(IEnumerable<MyListItem> myListItems);
+        Task AddAsync(IEnumerable<MyListItem> myListItems);
     }
 
     public class NicoNicoMyListObserveService : INicoNicoMyListObserveService
     {
-        public static string TableName = @"nicoNicoMyList";
+        private readonly INicoNicoMyListRepository nicoNicoMyListObserveRepository;
 
-        readonly CloudStorageAccount cloudStorageAccount;
-
-        public NicoNicoMyListObserveService(CloudStorageAccount cloudStorageAccount)
+        public NicoNicoMyListObserveService(INicoNicoMyListRepository nicoNicoMyListObserveRepository)
         {
-            this.cloudStorageAccount = cloudStorageAccount;
+            this.nicoNicoMyListObserveRepository = nicoNicoMyListObserveRepository;
         }
 
         public async Task<MyListItem[]> GetMyListItems(int myListId)
@@ -73,7 +72,7 @@ namespace KokeiroLifeLogger.Services
             return myListItems;
         }
 
-        public async Task SaveMyListItems(IEnumerable<MyListItem> myListItems)
+        public async Task AddAsync(IEnumerable<MyListItem> myListItems)
         {
             var now = DateTime.UtcNow;
             var nowTicks = now.Ticks;
@@ -88,34 +87,10 @@ namespace KokeiroLifeLogger.Services
                     InsertedTime = now,
                 });
 
-            var table = await GetCloudTableAsync();
-
             foreach (var entity in entities)
             {
-                var op = TableOperation.InsertOrReplace(entity);
-
-                await table.ExecuteAsync(op);
+                await nicoNicoMyListObserveRepository.AddAsync(entity);
             }
-        }
-
-        private async Task<CloudTable> GetCloudTableAsync()
-        {
-            var tableClient = cloudStorageAccount.CreateCloudTableClient();
-            var table = tableClient.GetTableReference(TableName);
-            await table.CreateIfNotExistsAsync();
-            return table;
-        }
-    }
-
-    static class StringEx
-    {
-        public static string TrimStarts(this string str, string trimString)
-        {
-            return System.Text.RegularExpressions.Regex.Replace(str, $"^{trimString}", "");
-        }
-        public static string TrimEnds(this string str, string trimString)
-        {
-            return System.Text.RegularExpressions.Regex.Replace(str, $"{trimString}$", "");
         }
     }
 
@@ -148,24 +123,4 @@ namespace KokeiroLifeLogger.Services
         public string WatchId { get; set; }
     }
 
-    public class NicoNicoMyListEntity : TableEntity
-    {
-        public string Title { get; set; }
-        public string VideoId { get; set; }
-        public int ViewCounter { get; set; }
-        public int MyListCounter { get; set; }
-        public int CommentCounter { get; set; }
-
-        public DateTime InsertedTime { get; set; }
-
-        public NicoNicoMyListEntity()
-        {
-        }
-
-        public NicoNicoMyListEntity(string partitionKey, string rowKey)
-        {
-            PartitionKey = partitionKey;
-            RowKey = rowKey;
-        }
-    }
 }

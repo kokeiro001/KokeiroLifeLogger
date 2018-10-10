@@ -21,16 +21,19 @@ namespace KokeiroLifeLogger.Services
         private readonly IBlogPvStringLoader blogPvStringLoader;
         private readonly IIFTTTService iftttService;
         private readonly IWeightMeasurementService weightMeasurementService;
+        private readonly IGitHubContributionsReader gitHubContributionsReader;
 
         public LifeLogCrawler(
             IBlogPvStringLoader blogPvStringLoader,
             IIFTTTService iftttService,
-            IWeightMeasurementService weightMeasurementService
+            IWeightMeasurementService weightMeasurementService,
+            IGitHubContributionsReader gitHubContributionsReader
         )
         {
             this.blogPvStringLoader = blogPvStringLoader;
             this.iftttService = iftttService;
             this.weightMeasurementService = weightMeasurementService;
+            this.gitHubContributionsReader = gitHubContributionsReader;
         }
 
         private string GetTitle()
@@ -105,7 +108,7 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var github = await new GitHubContributionsReader().GetContributionsAsync(to, "kokeiro001");
+                var github = await gitHubContributionsReader.GetContributionsAsync(to, "kokeiro001");
                 sb.Append(github);
             }
             catch (Exception e)

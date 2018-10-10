@@ -22,8 +22,6 @@ namespace KokeiroLifeLogger.Functions
     [DependencyInjectionConfig(typeof(DIConfig))]
     public static class IFTTTHttpTrigger
     {
-        public static string TableName = @"ifttt";
-
         [FunctionName("IFTTTHttpTrigger")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "ifttt")]HttpRequestMessage req,

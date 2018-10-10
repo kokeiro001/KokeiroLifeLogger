@@ -10,7 +10,12 @@ using Microsoft.Extensions.Logging;
 
 namespace KokeiroLifeLogger.Services
 {
-    class GitHubContributionsReader
+    public interface IGitHubContributionsReader
+    {
+        Task<string> GetContributionsAsync(DateTime date, string username);
+    }
+
+    class GitHubContributionsReader : IGitHubContributionsReader
     {
         static readonly string HostUrl = @"https://github.com/";
         static HttpClient httpClient = new HttpClient();

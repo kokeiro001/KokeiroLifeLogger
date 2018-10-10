@@ -21,8 +21,6 @@ namespace KokeiroLifeLogger.Functions
     [DependencyInjectionConfig(typeof(DIConfig))]
     public static class WeightMeasurementTrigger
     {
-        public static string TableName = @"weightmeasurement";
-
         [FunctionName("WeightMeasurementTrigger")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "bodymesurement")]HttpRequestMessage req,

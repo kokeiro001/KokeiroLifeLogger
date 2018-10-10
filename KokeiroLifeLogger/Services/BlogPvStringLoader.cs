@@ -14,25 +14,29 @@ namespace KokeiroLifeLogger.Services
     {
         private readonly string hatenaViewId;
         private readonly string qiitaViewId;
+        private readonly IGoogleAnalyticsReader googleAnalyticsReader;
 
-        public BlogPvStringLoader(string hatenaViewId, string qiitaViewId)
+        public BlogPvStringLoader(
+            string hatenaViewId, 
+            string qiitaViewId,
+            IGoogleAnalyticsReader googleAnalyticsReader
+        )
         {
             this.hatenaViewId = hatenaViewId;
             this.qiitaViewId = qiitaViewId;
+            this.googleAnalyticsReader = googleAnalyticsReader;
         }
 
         public async Task<BlogPvInfo> LoadAsync()
         {
             var date = DateTime.UtcNow.AddHours(9).AddDays(-1);
 
-            var pvReader = new GoogleAnalyticsReader();
-
             var result = new BlogPvInfo();
 
             // はてブは１日前のデータはまだ取得できないので、更に前日のデータを取得する
-            result.Hatena = await pvReader.ReadPv(hatenaViewId, date.AddDays(-1));
+            result.Hatena = await googleAnalyticsReader.ReadPv(hatenaViewId, date.AddDays(-1));
 
-            result.Qiita = await pvReader.ReadPv(qiitaViewId, date);
+            result.Qiita = await googleAnalyticsReader.ReadPv(qiitaViewId, date);
 
             return result;
         }
