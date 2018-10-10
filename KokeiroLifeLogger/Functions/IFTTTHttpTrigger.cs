@@ -23,6 +23,7 @@ namespace KokeiroLifeLogger.Functions
         )
         {
             var json = await req.Content.ReadAsStringAsync();
+            logger.LogInformation(json);
 
             var requestData = JsonConvert.DeserializeObject<IFTTTRequestData>(json);
 
