@@ -23,9 +23,9 @@ namespace KokeiroLifeLogger.Services
         private readonly IWeightMeasurementService weightMeasurementService;
 
         public LifeLogCrawler(
-            [Inject]IBlogPvStringLoader blogPvStringLoader,
-            [Inject]IIFTTTService iftttService,
-            [Inject]IWeightMeasurementService weightMeasurementService
+            IBlogPvStringLoader blogPvStringLoader,
+            IIFTTTService iftttService,
+            IWeightMeasurementService weightMeasurementService
         )
         {
             this.blogPvStringLoader = blogPvStringLoader;

@@ -3,12 +3,15 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AzureFunctions.Autofac;
+using KokeiroLifeLogger.Repository;
+using KokeiroLifeLogger.Services;
 using KokeiroLifeLogger.Utilities;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace KokeiroLifeLogger.Functions
@@ -21,61 +24,34 @@ namespace KokeiroLifeLogger.Functions
         [FunctionName("LocationEnteredOrExitedHttpTrigger")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "location")]HttpRequestMessage req,
-            ILogger logger
+            ILogger logger,
+            [Inject]ILocationEnteredOrExitedService locationEnteredOrExitedService
         )
         {
-            var jsonStr = await req.Content.ReadAsStringAsync();
-            var json = JObject.Parse(jsonStr);
-            logger.LogInformation($"jsonStr={jsonStr}");
+            var json = await req.Content.ReadAsStringAsync();
 
-            var location = (string)json["location"];
-            var enteredOrExited = (string)json["enteredOrExited"];
+            var request = JsonConvert.DeserializeObject<LocationEnteredOrExitedRequest>(json);
 
-            logger.LogInformation($"location={location}, enteredOrExited={enteredOrExited}");
-
-            var table = await GetCloudTableAsync();
+            logger.LogInformation($"location={request.Location}, enteredOrExited={request.EnteredOrExited}");
 
             var now = DateTime.UtcNow;
 
-            var entity = new LocationEnteredOrExitedEntity(location, now.Ticks.ToString())
+            var entity = new LocationEnteredOrExitedEntity(request.Location, now.Ticks.ToString())
             {
-                Location = location,
-                EnteredOrExited = enteredOrExited,
+                Location = request.Location,
+                EnteredOrExited = request.EnteredOrExited,
                 CreatedAt = now,
             };
 
-            var op = TableOperation.InsertOrReplace(entity);
-            await table.ExecuteAsync(op);
-            return req.CreateResponse(HttpStatusCode.OK, $"Location={location} EnteredOrExited={enteredOrExited}");
-        }
+            await locationEnteredOrExitedService.AddAsync(entity);
 
-        private static async Task<CloudTable> GetCloudTableAsync()
-        {
-            var storageAccount = CloudStorageAccountUtility.GetDefaultStorageAccount();
-            var tableClient = storageAccount.CreateCloudTableClient();
-            var table = tableClient.GetTableReference(TableName);
-            await table.CreateIfNotExistsAsync();
-            return table;
-        }
-
-        public class LocationEnteredOrExitedEntity : TableEntity
-        {
-            public string Location { get; set; }
-
-            public string EnteredOrExited { get; set; }
-
-            public DateTime CreatedAt { get; set; }
-
-            public LocationEnteredOrExitedEntity()
-            {
-            }
-
-            public LocationEnteredOrExitedEntity(string partitionKey, string rowKey)
-            {
-                PartitionKey = partitionKey;
-                RowKey = rowKey;
-            }
+            return req.CreateResponse(HttpStatusCode.OK, $"Location={request.Location} EnteredOrExited={request.EnteredOrExited}");
         }
     }
 
+    public class LocationEnteredOrExitedRequest
+    {
+        public string Location { get; set; }
+        public string EnteredOrExited { get; set; }
+    }
 }

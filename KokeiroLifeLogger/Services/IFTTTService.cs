@@ -20,7 +20,7 @@ namespace KokeiroLifeLogger.Services
         private readonly IIFTTTRepository iftttRepository;
 
         public IFTTTService(
-            [Inject] IIFTTTRepository iftttRepository
+            IIFTTTRepository iftttRepository
         )
         {
             this.iftttRepository = iftttRepository;
