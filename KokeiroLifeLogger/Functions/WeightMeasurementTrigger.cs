@@ -30,29 +30,17 @@ namespace KokeiroLifeLogger.Functions
             [Inject]IWeightMeasurementService weightMeasurementService
         )
         {
-            var jsonStr = await req.Content.ReadAsStringAsync();
-            logger.LogInformation(jsonStr);
+            var json = await req.Content.ReadAsStringAsync();
+            logger.LogInformation(json);
 
-            var item = WeightMesurementEntity.Parse(jsonStr);
-            item.InsertedTime = DateTime.UtcNow;
+            var entity = WeightMesurementEntity.Parse(json);
+            entity.InsertedTime = DateTime.UtcNow;
 
-            logger.LogInformation($"weight={item.Weight}, leanMass={item.LeanMass}, fatMass={item.FatMass}, fatPercent={item.FatPercent}, mesuredAt={item.MesuredAt}");
+            logger.LogInformation($"weight={entity.Weight}, leanMass={entity.LeanMass}, fatMass={entity.FatMass}, fatPercent={entity.FatPercent}, mesuredAt={entity.MesuredAt}");
 
-            var table = await GetCloudTableAsync();
+            await weightMeasurementService.AddData(entity);
 
-            var op = TableOperation.Insert(item);
-
-            await table.ExecuteAsync(op);
-            return req.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(item));
-        }
-
-        private static async Task<CloudTable> GetCloudTableAsync()
-        {
-            var storageAccount = CloudStorageAccountUtility.GetDefaultStorageAccount();
-            var tableClient = storageAccount.CreateCloudTableClient();
-            var table = tableClient.GetTableReference(TableName);
-            await table.CreateIfNotExistsAsync();
-            return table;
+            return req.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(entity));
         }
     }
 }
