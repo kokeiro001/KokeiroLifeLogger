@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using AzureFunctions.Autofac.Configuration;
+using KokeiroLifeLogger.Repository;
 using KokeiroLifeLogger.Services;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
@@ -18,6 +19,18 @@ namespace KokeiroLifeLogger
         {
             DependencyInjection.Initialize(builder =>
             {
+                builder.Register<CloudStorageAccountProvider>(c =>
+                {
+                    var connectionString = CloudConfigurationManager.GetSetting("AzureWebJobsStorage");
+                    var cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
+
+                    return new CloudStorageAccountProvider(cloudStorageAccount);
+                })
+                .As<ICloudStorageAccountProvider>();
+
+                builder.RegisterType<IFTTTRepository>().As<IIFTTTRepository>();
+
+
                 builder.Register<BlogPvStringLoader>(c =>
                 {
                     return new BlogPvStringLoader(
@@ -28,11 +41,7 @@ namespace KokeiroLifeLogger
                 .As<IBlogPvStringLoader>();
 
 
-                builder.Register<LifeLogCrawler>(c =>
-                {
-                    return new LifeLogCrawler(c.Resolve<IBlogPvStringLoader>());
-                })
-                .As<ILifeLogCrawler>();
+                builder.RegisterType<LifeLogCrawler>().As<ILifeLogCrawler>();
 
                 builder.Register<MailSender>(c =>
                 {
