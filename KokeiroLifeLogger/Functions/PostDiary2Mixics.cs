@@ -28,10 +28,12 @@ namespace KokeiroLifeLogger.Functions
 
             var lifeLog = await lifeLogCrawler.CrawlAsync();
 
+            logger.LogInformation($"Title={lifeLog.Title}, Body={lifeLog.Body}");
+
             var isLocal = CloudConfigurationManager.GetSetting("IsLocal");
             if (isLocal == "true")
             {
-                logger.LogInformation($"local running!!! skip SendMail. Title={lifeLog.Title}, Body={lifeLog.Body}");
+                logger.LogInformation($"local running!!! skip SendMail.");
                 return;
             }
 
