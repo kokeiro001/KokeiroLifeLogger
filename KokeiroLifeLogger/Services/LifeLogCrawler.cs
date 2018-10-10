@@ -105,8 +105,11 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var github = await gitHubContributionsReader.GetContributionsAsync(to, "kokeiro001");
-                sb.Append(github);
+                var githubContribution = await gitHubContributionsReader.GetContributionsAsync(to, "kokeiro001");
+
+                sb.AppendLine($"GitHubのコントリビューション数：{githubContribution.Contributions}");
+                sb.AppendLine($"TargetDate：{githubContribution.Date}");
+                sb.AppendLine();
             }
             catch (Exception e)
             {

@@ -10,7 +10,7 @@ namespace KokeiroLifeLogger.Services
 {
     public interface IGitHubContributionsReader
     {
-        Task<string> GetContributionsAsync(DateTime date, string username);
+        Task<ContributionItem> GetContributionsAsync(DateTime date, string username);
     }
 
     class GitHubContributionsReader : IGitHubContributionsReader
@@ -22,19 +22,12 @@ namespace KokeiroLifeLogger.Services
         {
         }
 
-        public async Task<string> GetContributionsAsync(DateTime date, string username)
+        public async Task<ContributionItem> GetContributionsAsync(DateTime date, string username)
         {
-            var sb = new StringBuilder();
-            sb.AppendLine("-------------------------------------");
-
             var contoributions = await GetContributionsCoreAsync(username);
             var contribution = contoributions.First(x => x.Date == date.Date);
 
-            sb.AppendLine($"GitHubのコントリビューション数：{contribution.Contributions}");
-            sb.AppendLine($"TargetDate：{date}");
-            sb.AppendLine();
-
-            return sb.ToString();
+            return contribution;
         }
 
         async Task<IEnumerable<ContributionItem>> GetContributionsCoreAsync(string username)
@@ -64,7 +57,7 @@ namespace KokeiroLifeLogger.Services
         }
     }
 
-    class ContributionItem
+    public class ContributionItem
     {
         public DateTime Date { get; set; }
         public int Contributions { get; set; }
