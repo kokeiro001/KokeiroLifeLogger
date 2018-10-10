@@ -21,7 +21,16 @@ namespace KokeiroLifeLogger.Services
         static readonly string KeyFileContainerName = @"etc";
         static readonly string KeyFileName = @"blog_analytics_api_key.p12";
 
+        private readonly ICloudStorageAccountProvider cloudStorageAccountProvider;
+
         string GoogleServiceAccount { get => CloudConfigurationManager.GetSetting("BlogPvServicerAccount"); }
+
+        public GoogleAnalyticsReader(
+            ICloudStorageAccountProvider cloudStorageAccountProvider
+        )
+        {
+            this.cloudStorageAccountProvider = cloudStorageAccountProvider;
+        }
 
         public async Task<int> ReadPv(string viewId, DateTime date)
         {
@@ -57,8 +66,7 @@ namespace KokeiroLifeLogger.Services
 
         async Task<byte[]> LoadApiKeyFileAsync()
         {
-            var storageAccount = CloudStorageAccountUtility.GetDefaultStorageAccount();
-
+            var storageAccount = cloudStorageAccountProvider.GetCloudStorageAccount();
             var blobClient = storageAccount.CreateCloudBlobClient();
             var container = blobClient.GetContainerReference(KeyFileContainerName);
 
