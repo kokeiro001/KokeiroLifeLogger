@@ -23,6 +23,7 @@ namespace KokeiroLifeLogger.Functions
         )
         {
             var json = await req.Content.ReadAsStringAsync();
+            logger.LogInformation(json);
 
             var request = JsonConvert.DeserializeObject<LocationEnteredOrExitedRequest>(json);
 

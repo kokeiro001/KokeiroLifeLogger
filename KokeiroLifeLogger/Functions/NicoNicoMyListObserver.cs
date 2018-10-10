@@ -19,15 +19,9 @@ namespace KokeiroLifeLogger.Functions
         {
             var myListId = 63412739;
 
-            logger.LogInformation("new service");
-
-            logger.LogInformation("GetMyListItems");
             var myListItems = await nicoNicoMyListObserveService.GetMyListItems(myListId);
 
-            logger.LogInformation("SaveMyListItems");
             await nicoNicoMyListObserveService.AddAsync(myListItems);
-
-            logger.LogInformation($"function finished: {DateTime.UtcNow}");
         }
     }
 }
