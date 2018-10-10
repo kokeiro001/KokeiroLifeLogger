@@ -17,6 +17,7 @@ namespace KokeiroLifeLogger.Repository
         {
             var tableClient = cloudStorageAccount.CreateCloudTableClient();
             CloudTable = tableClient.GetTableReference(tableName);
+            CloudTable.CreateIfNotExists();
         }
 
         public async Task AddAsync(T entity)
