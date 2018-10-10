@@ -50,7 +50,7 @@ namespace KokeiroLifeLogger
                 builder.RegisterType<LifeLogCrawler>().As<ILifeLogCrawler>();
                 builder.RegisterType<LocationEnteredOrExitedService>().As<ILocationEnteredOrExitedService>();
                 builder.RegisterType<NicoNicoMyListObserveService>().As<INicoNicoMyListObserveService>();
-                builder.RegisterType<WeightMeasurementService>().As<>(IWeightMeasurementService);
+                builder.RegisterType<WeightMeasurementService>().As<IWeightMeasurementService>();
 
                 builder.Register<MailSender>(c =>
                 {
