@@ -5,14 +5,10 @@ using System.Threading.Tasks;
 using AzureFunctions.Autofac;
 using KokeiroLifeLogger.Repository;
 using KokeiroLifeLogger.Services;
-using KokeiroLifeLogger.Utilities;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
-using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace KokeiroLifeLogger.Functions
 {

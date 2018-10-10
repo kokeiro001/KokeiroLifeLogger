@@ -1,12 +1,7 @@
-using System;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
-using System.Net.Mail;
-using System.Net;
 using System.Configuration;
 using Microsoft.Azure;
 using System.Threading.Tasks;
-using KokeiroLifeLogger.Utilities;
 using KokeiroLifeLogger.Services;
 using Microsoft.Extensions.Logging;
 using AzureFunctions.Autofac;
