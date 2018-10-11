@@ -19,20 +19,18 @@ namespace KokeiroLifeLogger.Functions
             [TimerTrigger("0 0 20 * * *")]TimerInfo myTimer, 
             ILogger logger,
             [Inject]ILifeLogCrawler lifeLogCrawler,
-            [Inject]IMailSender mailSender,
-            [Inject]IConfigProvider configProvider
+            [Inject]IMailSender mailSender
         )
         {
             // TODO: これもBinderに移したい
-            var config = configProvider.GetConfig();
-            var from = config["MixiPostMail"];
-            var to = config["MixiPostMailTo"];
+            var from = ConfigurationManager.AppSettings["MixiPostMail"];
+            var to = ConfigurationManager.AppSettings["MixiPostMailTo"];
 
             var lifeLog = await lifeLogCrawler.CrawlAsync();
 
             logger.LogInformation($"Title={lifeLog.Title}, Body={lifeLog.Body}");
 
-            var isLocal = config["IsLocal"];
+            var isLocal = CloudConfigurationManager.GetSetting("IsLocal");
             if (isLocal == "true")
             {
                 logger.LogInformation($"local running!!! skip SendMail.");

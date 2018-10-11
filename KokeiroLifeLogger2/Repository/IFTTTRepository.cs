@@ -2,7 +2,6 @@
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Repository
 {
@@ -25,7 +24,7 @@ namespace KokeiroLifeLogger.Repository
 
     public interface IIFTTTRepository : IStorageTableRepository<IFTTTEntity>
     {
-        Task<IFTTTEntity[]> GetByDate(DateTime from, DateTime to);
+        IFTTTEntity[] GetByDate(DateTime from, DateTime to);
     }
 
     public class IFTTTRepository : StorageTableRepository<IFTTTEntity>, IIFTTTRepository
@@ -35,7 +34,7 @@ namespace KokeiroLifeLogger.Repository
         {
         }
 
-        public async Task<IFTTTEntity[]> GetByDate(DateTime from, DateTime to)
+        public IFTTTEntity[] GetByDate(DateTime from, DateTime to)
         {
             var propertyName = nameof(IFTTTEntity.InsertedTime);
             var filter1 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.GreaterThanOrEqual, from);
@@ -44,14 +43,12 @@ namespace KokeiroLifeLogger.Repository
             var finalFilter = TableQuery.CombineFilters(filter1, "and", filter2);
 
             var query = new TableQuery<IFTTTEntity>().Where(finalFilter);
-            var items = await CloudTable
-                .ExecuteQuerySegmentedAsync(query, new TableContinuationToken());
-
-            var result = items
+            var items = CloudTable
+                .ExecuteQuery(query)
                 .OrderBy(x => x.InsertedTime)
                 .ToArray();
 
-            return result;
+            return items;
         }
     }
 }

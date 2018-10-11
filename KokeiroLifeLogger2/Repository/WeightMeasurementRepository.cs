@@ -4,7 +4,6 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Repository
 {
@@ -39,7 +38,7 @@ namespace KokeiroLifeLogger.Repository
 
     public interface IWeightMeasurementRepository : IStorageTableRepository<WeightMesurementEntity>
     {
-        Task<WeightMesurementEntity> GetByDateDateTime(DateTime from, DateTime to);
+        WeightMesurementEntity GetByDateDateTime(DateTime from, DateTime to);
     }
 
     public class WeightMeasurementRepository : StorageTableRepository<WeightMesurementEntity>, IWeightMeasurementRepository
@@ -49,10 +48,8 @@ namespace KokeiroLifeLogger.Repository
         {
         }
 
-        public async Task<WeightMesurementEntity> GetByDateDateTime(DateTime from, DateTime to)
+        public WeightMesurementEntity GetByDateDateTime(DateTime from, DateTime to)
         {
-            await CloudTable.CreateIfNotExistsAsync();
-
             var propertyName = nameof(WeightMesurementEntity.InsertedTime);
             var filter1 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.GreaterThanOrEqual, from);
             var filter2 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.LessThanOrEqual, to);
@@ -60,11 +57,9 @@ namespace KokeiroLifeLogger.Repository
             var finalFilter = TableQuery.CombineFilters(filter1, "and", filter2);
 
             var query = new TableQuery<WeightMesurementEntity>().Where(finalFilter);
-            var items = await CloudTable.ExecuteQuerySegmentedAsync(query, new TableContinuationToken());
-            
-            var result = items.FirstOrDefault();
+            var item = CloudTable.ExecuteQuery(query).FirstOrDefault();
 
-            return result;
+            return item;
         }
     }
 }

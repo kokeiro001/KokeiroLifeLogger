@@ -22,17 +22,14 @@ namespace KokeiroLifeLogger.Services
         static readonly string KeyFileName = @"blog_analytics_api_key.p12";
 
         private readonly ICloudStorageAccountProvider cloudStorageAccountProvider;
-        private readonly IConfigProvider configProvider;
 
-        string GoogleServiceAccount { get => configProvider.GetConfig()["BlogPvServicerAccount"]; }
+        string GoogleServiceAccount { get => CloudConfigurationManager.GetSetting("BlogPvServicerAccount"); }
 
         public GoogleAnalyticsReader(
-            ICloudStorageAccountProvider cloudStorageAccountProvider,
-            IConfigProvider configProvider
+            ICloudStorageAccountProvider cloudStorageAccountProvider
         )
         {
             this.cloudStorageAccountProvider = cloudStorageAccountProvider;
-            this.configProvider = configProvider;
         }
 
         public async Task<int> ReadPv(string viewId, DateTime date)

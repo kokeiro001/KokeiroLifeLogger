@@ -7,7 +7,7 @@ namespace KokeiroLifeLogger.Services
     public interface IIFTTTService
     {
         Task AddData(IFTTTEntity entity);
-        Task<IFTTTEntity[]> GetDataByDate(DateTime from, DateTime to);
+        IFTTTEntity[] GetDataByDate(DateTime from, DateTime to);
     }
 
     public class IFTTTService : IIFTTTService
@@ -26,7 +26,7 @@ namespace KokeiroLifeLogger.Services
             await iftttRepository.AddAsync(entity);
         }
 
-        public Task<IFTTTEntity[]> GetDataByDate(DateTime from, DateTime to)
+        public IFTTTEntity[] GetDataByDate(DateTime from, DateTime to)
         {
             return iftttRepository.GetByDate(from, to);
         }

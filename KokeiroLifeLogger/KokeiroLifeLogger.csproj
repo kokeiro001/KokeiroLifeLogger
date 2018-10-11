@@ -1,22 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AzureFunctionsVersion>v2</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.9.10" />
     <PackageReference Include="AzureFunctions.Autofac" Version="3.0.5" />
-    <PackageReference Include="Google.Apis.Analytics.v3" Version="1.35.2.1268" />
-    <PackageReference Include="Microsoft.Azure.WebJobs" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.ServiceBus" Version="2.2.0" />
-    <PackageReference Include="Microsoft.WindowsAzure.ConfigurationManager" Version="3.2.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="Google.Apis.Analytics.v3" Version="1.36.0.1268" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.22" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Configuration" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
@@ -24,6 +16,7 @@
     </None>
     <None Update="local.settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
 </Project>

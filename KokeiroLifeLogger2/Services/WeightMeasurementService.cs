@@ -7,7 +7,7 @@ namespace KokeiroLifeLogger.Services
     public interface IWeightMeasurementService
     {
         Task AddData(WeightMesurementEntity entity);
-        Task<WeightMesurementEntity> GetByDate(DateTime from, DateTime to);
+        WeightMesurementEntity GetByDate(DateTime from, DateTime to);
     }
 
     public class WeightMeasurementService : IWeightMeasurementService
@@ -26,7 +26,7 @@ namespace KokeiroLifeLogger.Services
             await weightMeasurementRepository.AddAsync(entity);
         }
 
-        public Task<WeightMesurementEntity> GetByDate(DateTime from, DateTime to)
+        public WeightMesurementEntity GetByDate(DateTime from, DateTime to)
         {
             return weightMeasurementRepository.GetByDateDateTime(from, to);
         }

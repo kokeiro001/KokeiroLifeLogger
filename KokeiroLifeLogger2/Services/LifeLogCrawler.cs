@@ -53,7 +53,7 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var iftttData = await iftttService.GetDataByDate(from, to);
+                var iftttData = iftttService.GetDataByDate(from, to);
                 AppendStringByPartitionKey(iftttData, sb, "pocket", "Pocketに突っ込んだ記事");
                 AppendStringTwitterLiked(iftttData, sb);
                 AppendStringByPartitionKey(iftttData, sb, "github_star", "GitHubでStarつけたリポジトリ");
@@ -68,7 +68,7 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var weightMeasurement = await weightMeasurementService.GetByDate(from, to);
+                var weightMeasurement = weightMeasurementService.GetByDate(from, to);
                 if (weightMeasurement != null)
                 {
                     sb.AppendLine($"体重:{weightMeasurement.Weight}kg");
