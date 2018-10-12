@@ -1,6 +1,4 @@
-﻿using Autofac;
-using AzureFunctions.Autofac.Configuration;
-using KokeiroLifeLogger.Repository;
+﻿using KokeiroLifeLogger.Repository;
 using KokeiroLifeLogger.Services;
 using Microsoft.Azure;
 using Microsoft.Extensions.Configuration;
@@ -12,74 +10,6 @@ using System.Threading;
 
 namespace KokeiroLifeLogger
 {
-    class DIConfig
-    {
-        public DIConfig(string functionName)
-        {
-            DependencyInjection.Initialize(builder =>
-            {
-                builder.Register<ConfigProvider>(c =>
-                {
-                    var executingPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-                    var config = new ConfigurationBuilder()
-                        .SetBasePath(Path.GetDirectoryName(executingPath))
-                        .AddJsonFile("local.settings.json", true, true)
-                        .AddEnvironmentVariables()
-                        .Build();
-
-                    return new ConfigProvider(config);
-                })
-                .As<IConfigProvider>();
-
-                builder.Register<CloudStorageAccountProvider>(c =>
-                {
-                    var config = c.Resolve<IConfigProvider>().GetConfig();
-                    var connectionString = config["AzureWebJobsStorage"];
-                    var cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
-
-                    return new CloudStorageAccountProvider(cloudStorageAccount);
-                })
-                .As<ICloudStorageAccountProvider>();
-
-                builder.RegisterType<IFTTTRepository>().As<IIFTTTRepository>();
-                builder.RegisterType<LocationEnteredOrExitedRepository>().As<ILocationEnteredOrExitedRepository>();
-                builder.RegisterType<WeightMeasurementRepository>().As<IWeightMeasurementRepository>();
-
-                builder.Register<BlogPvStringLoader>(c =>
-                {
-                    var config = c.Resolve<IConfigProvider>().GetConfig();
-
-                    return new BlogPvStringLoader(
-                        config["HatebuViewId"],
-                        config["QiitaViewId"],
-                        c.Resolve<IGoogleAnalyticsReader>()
-                    );
-                })
-                .As<IBlogPvStringLoader>();
-
-                builder.RegisterType<GitHubContributionsReader>().As<IGitHubContributionsReader>();
-                builder.RegisterType<GoogleAnalyticsReader>().As<IGoogleAnalyticsReader>();
-                builder.RegisterType<LifeLogCrawler>().As<ILifeLogCrawler>();
-                builder.RegisterType<IFTTTService>().As<IIFTTTService>();
-                builder.RegisterType<LifeLogCrawler>().As<ILifeLogCrawler>();
-                builder.RegisterType<LocationEnteredOrExitedService>().As<ILocationEnteredOrExitedService>();
-                builder.RegisterType<NicoNicoMyListObserveService>().As<INicoNicoMyListObserveService>();
-                builder.RegisterType<WeightMeasurementService>().As<IWeightMeasurementService>();
-
-                builder.Register<MailSender>(c =>
-                {
-                    var config = c.Resolve<IConfigProvider>().GetConfig();
-                    var from = config["MixiPostMail"];
-                    var password = config["MixiPostMailPassword"];
-                    return new MailSender(from, password);
-                })
-                .As<IMailSender>();
-
-            }, functionName);
-        }
-    }
-
     public interface IConfigProvider
     {
         IConfigurationRoot GetConfig();

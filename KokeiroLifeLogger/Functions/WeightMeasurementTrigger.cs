@@ -6,20 +6,19 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using System;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
-using AzureFunctions.Autofac;
 using KokeiroLifeLogger.Services;
 using KokeiroLifeLogger.Repository;
+using KokeiroLifeLogger.Injection;
 
 namespace KokeiroLifeLogger.Functions
 {
-    [DependencyInjectionConfig(typeof(DIConfig))]
     public static class WeightMeasurementTrigger
     {
         [FunctionName("WeightMeasurementTrigger")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "bodymesurement")]HttpRequestMessage req,
             ILogger logger,
-            [Inject]IWeightMeasurementService weightMeasurementService
+            [Inject(typeof(IWeightMeasurementService))]IWeightMeasurementService weightMeasurementService
         )
         {
             var json = await req.Content.ReadAsStringAsync();

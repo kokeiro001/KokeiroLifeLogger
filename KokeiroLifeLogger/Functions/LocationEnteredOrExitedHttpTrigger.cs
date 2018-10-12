@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using AzureFunctions.Autofac;
+using KokeiroLifeLogger.Injection;
 using KokeiroLifeLogger.Repository;
 using KokeiroLifeLogger.Services;
 using Microsoft.Azure.WebJobs;
@@ -12,14 +12,13 @@ using Newtonsoft.Json;
 
 namespace KokeiroLifeLogger.Functions
 {
-    [DependencyInjectionConfig(typeof(DIConfig))]
     public static class LocationEnteredOrExitedHttpTrigger
     {
         [FunctionName("LocationEnteredOrExitedHttpTrigger")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "location")]HttpRequestMessage req,
             ILogger logger,
-            [Inject]ILocationEnteredOrExitedService locationEnteredOrExitedService
+            [Inject(typeof(ILocationEnteredOrExitedService))]ILocationEnteredOrExitedService locationEnteredOrExitedService
         )
         {
             var json = await req.Content.ReadAsStringAsync();

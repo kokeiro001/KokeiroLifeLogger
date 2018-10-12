@@ -5,21 +5,20 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using System.Threading.Tasks;
 using System;
 using Microsoft.Extensions.Logging;
-using AzureFunctions.Autofac;
 using Newtonsoft.Json;
 using KokeiroLifeLogger.Repository;
 using KokeiroLifeLogger.Services;
+using KokeiroLifeLogger.Injection;
 
 namespace KokeiroLifeLogger.Functions
 {
-    [DependencyInjectionConfig(typeof(DIConfig))]
     public static class IFTTTHttpTrigger
     {
         [FunctionName("IFTTTHttpTrigger")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "ifttt")]HttpRequestMessage req,
             ILogger logger,
-            [Inject]IIFTTTService iftttService
+            [Inject(typeof(IIFTTTService))]IIFTTTService iftttService
         )
         {
             var json = await req.Content.ReadAsStringAsync();

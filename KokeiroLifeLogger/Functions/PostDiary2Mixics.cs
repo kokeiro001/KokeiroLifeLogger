@@ -4,23 +4,22 @@ using Microsoft.Azure;
 using System.Threading.Tasks;
 using KokeiroLifeLogger.Services;
 using Microsoft.Extensions.Logging;
-using AzureFunctions.Autofac;
+using KokeiroLifeLogger.Injection;
 
 namespace KokeiroLifeLogger.Functions
 {
     // 1日の区切りをAM5:00とした日記を自動投稿する.
     // 時差注意！
 
-    [DependencyInjectionConfig(typeof(DIConfig))]
     public static class PostDiary2Mixics
     {
         [FunctionName("PostDiary2Mixics")]
         public static async Task Run(
             [TimerTrigger("0 0 20 * * *")]TimerInfo myTimer, 
             ILogger logger,
-            [Inject]ILifeLogCrawler lifeLogCrawler,
-            [Inject]IMailSender mailSender,
-            [Inject]IConfigProvider configProvider
+            [Inject(typeof(ILifeLogCrawler))]ILifeLogCrawler lifeLogCrawler,
+            [Inject(typeof(IMailSender))]IMailSender mailSender,
+            [Inject(typeof(IConfigProvider))]IConfigProvider configProvider
         )
         {
             // TODO: これもBinderに移したい
