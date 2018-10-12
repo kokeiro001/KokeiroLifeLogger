@@ -4,7 +4,6 @@ using Microsoft.Azure;
 using System.Threading.Tasks;
 using KokeiroLifeLogger.Services;
 using Microsoft.Extensions.Logging;
-using KokeiroLifeLogger.Injection;
 using AzureFunctions.Autofac;
 
 namespace KokeiroLifeLogger.Functions

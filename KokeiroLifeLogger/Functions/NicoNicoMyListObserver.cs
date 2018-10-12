@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using AzureFunctions.Autofac;
-using KokeiroLifeLogger.Injection;
 using KokeiroLifeLogger.Services;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;

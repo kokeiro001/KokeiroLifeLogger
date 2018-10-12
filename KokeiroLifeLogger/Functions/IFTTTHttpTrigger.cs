@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using KokeiroLifeLogger.Repository;
 using KokeiroLifeLogger.Services;
-using KokeiroLifeLogger.Injection;
 using AzureFunctions.Autofac;
 
 namespace KokeiroLifeLogger.Functions

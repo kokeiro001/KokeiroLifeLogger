@@ -145,12 +145,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KokeiroLifeLogger2\KokeiroLifeLogger2.csproj">
-      <Project>{5c56d05a-41ad-4f0e-b533-e49390626f92}</Project>
-      <Name>KokeiroLifeLogger2</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AzureFunctions.Autofac;
-using KokeiroLifeLogger.Injection;
 using KokeiroLifeLogger.Repository;
 using KokeiroLifeLogger.Services;
 using Microsoft.Azure.WebJobs;
