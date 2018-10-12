@@ -9,16 +9,18 @@ using Newtonsoft.Json;
 using KokeiroLifeLogger.Repository;
 using KokeiroLifeLogger.Services;
 using KokeiroLifeLogger.Injection;
+using AzureFunctions.Autofac;
 
 namespace KokeiroLifeLogger.Functions
 {
+    [DependencyInjectionConfig(typeof(DIConfig))]
     public static class IFTTTHttpTrigger
     {
         [FunctionName("IFTTTHttpTrigger")]
         public static async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "ifttt")]HttpRequestMessage req,
             ILogger logger,
-            [Inject(typeof(IIFTTTService))]IIFTTTService iftttService
+            [Inject]IIFTTTService iftttService
         )
         {
             var json = await req.Content.ReadAsStringAsync();

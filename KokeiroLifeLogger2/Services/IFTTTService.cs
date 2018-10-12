@@ -35,36 +35,36 @@ namespace KokeiroLifeLogger.Services
     }
 
 
-    public class InjectConfiguration : IExtensionConfigProvider
-    {
-        private static readonly object _syncLock = new object();
-        private static IContainer _container;
+    //public class InjectConfiguration : IExtensionConfigProvider
+    //{
+    //    private static readonly object _syncLock = new object();
+    //    private static IContainer _container;
 
-        public void Initialize(ExtensionConfigContext context)
-        {
-            InitializeContainer(context);
+    //    public void Initialize(ExtensionConfigContext context)
+    //    {
+    //        InitializeContainer(context);
 
-            //context
-            //    .AddBindingRule<InjectaAttribute>()
-            //    .BindToInput<dynamic>(i => _container.Resolve(i.Type));
-        }
+    //        //context
+    //        //    .AddBindingRule<InjectaAttribute>()
+    //        //    .BindToInput<dynamic>(i => _container.Resolve(i.Type));
+    //    }
 
-        private void InitializeContainer(ExtensionConfigContext context)
-        {
-            if (_container != null)
-            {
-                return;
-            }
+    //    private void InitializeContainer(ExtensionConfigContext context)
+    //    {
+    //        if (_container != null)
+    //        {
+    //            return;
+    //        }
 
-            lock (_syncLock)
-            {
-                if (_container != null)
-                {
-                    return;
-                }
+    //        lock (_syncLock)
+    //        {
+    //            if (_container != null)
+    //            {
+    //                return;
+    //            }
 
-                //context.Config.LoggerFactory;
-            }
-        }
-    }
+    //            //context.Config.LoggerFactory;
+    //        }
+    //    }
+    //}
 }
