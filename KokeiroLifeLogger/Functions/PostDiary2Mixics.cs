@@ -18,7 +18,7 @@ namespace KokeiroLifeLogger.Functions
         public static async Task Run(
             [TimerTrigger("0 0 20 * * *")]TimerInfo myTimer, 
             ILogger logger,
-            [Inject]ILifeLogCrawler lifeLogCrawler,
+            [Inject]ILifeLogService lifeLogCrawler,
             [Inject]IMailService mailSender,
             [Inject]IConfigProvider configProvider
         )

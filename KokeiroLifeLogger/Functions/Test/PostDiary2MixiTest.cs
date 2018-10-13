@@ -19,7 +19,7 @@ namespace KokeiroLifeLogger.Functions.Test
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger logger,
-            [Inject]ILifeLogCrawler lifeLogCrawler,
+            [Inject]ILifeLogService lifeLogCrawler,
             [Inject]IConfigProvider configProvider
         )
         {

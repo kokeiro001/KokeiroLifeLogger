@@ -61,9 +61,8 @@ namespace KokeiroLifeLogger
 
                 builder.RegisterType<GitHubService>().As<IGitHubService>();
                 builder.RegisterType<GoogleAnalyticsService>().As<IGoogleAnalyticsService>();
-                builder.RegisterType<LifeLogCrawler>().As<ILifeLogCrawler>();
+                builder.RegisterType<LifeLogService>().As<ILifeLogService>();
                 builder.RegisterType<IFTTTService>().As<IIFTTTService>();
-                builder.RegisterType<LifeLogCrawler>().As<ILifeLogCrawler>();
                 builder.RegisterType<LocationEnteredOrExitedService>().As<ILocationEnteredOrExitedService>();
                 builder.RegisterType<NicoNicoMyListObserveService>().As<INicoNicoMyListObserveService>();
                 builder.RegisterType<WeightMeasurementService>().As<IWeightMeasurementService>();

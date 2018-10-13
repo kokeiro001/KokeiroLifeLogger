@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services
 {
-    public interface ILifeLogCrawler
+    public interface ILifeLogService
     {
         Task<LifeLog> CrawlAsync();
     }
 
-    public class LifeLogCrawler : ILifeLogCrawler
+    public class LifeLogService : ILifeLogService
     {
         private readonly IBlogAnalytcsService blogPvStringLoader;
         private readonly IIFTTTService iftttService;
@@ -21,7 +21,7 @@ namespace KokeiroLifeLogger.Services
         private readonly IGitHubService gitHubContributionsReader;
         private readonly IWithingsSleepService withingsSleepService;
 
-        public LifeLogCrawler(
+        public LifeLogService(
             IBlogAnalytcsService blogPvStringLoader,
             IIFTTTService iftttService,
             IWeightMeasurementService weightMeasurementService,
