@@ -18,14 +18,14 @@ namespace KokeiroLifeLogger.Services
         private readonly IBlogAnalytcsService blogPvStringLoader;
         private readonly IIFTTTService iftttService;
         private readonly IWeightMeasurementService weightMeasurementService;
-        private readonly IGitHubContributionsReader gitHubContributionsReader;
+        private readonly IGitHubService gitHubContributionsReader;
         private readonly IWithingsSleepService withingsSleepService;
 
         public LifeLogCrawler(
             IBlogAnalytcsService blogPvStringLoader,
             IIFTTTService iftttService,
             IWeightMeasurementService weightMeasurementService,
-            IGitHubContributionsReader gitHubContributionsReader,
+            IGitHubService gitHubContributionsReader,
             IWithingsSleepService withingsSleepService
         )
         {

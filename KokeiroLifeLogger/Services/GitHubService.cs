@@ -8,17 +8,17 @@ using AngleSharp.Parser.Html;
 
 namespace KokeiroLifeLogger.Services
 {
-    public interface IGitHubContributionsReader
+    public interface IGitHubService
     {
         Task<ContributionItem> GetContributionsAsync(DateTime date, string username);
     }
 
-    class GitHubContributionsReader : IGitHubContributionsReader
+    class GitHubService : IGitHubService
     {
         static readonly string HostUrl = @"https://github.com/";
         static HttpClient httpClient = new HttpClient();
 
-        public GitHubContributionsReader()
+        public GitHubService()
         {
         }
 

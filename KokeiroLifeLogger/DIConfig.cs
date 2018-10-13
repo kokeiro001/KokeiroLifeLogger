@@ -59,7 +59,7 @@ namespace KokeiroLifeLogger
                 })
                 .As<IBlogAnalytcsService>();
 
-                builder.RegisterType<GitHubContributionsReader>().As<IGitHubContributionsReader>();
+                builder.RegisterType<GitHubService>().As<IGitHubService>();
                 builder.RegisterType<GoogleAnalyticsReader>().As<IGoogleAnalyticsReader>();
                 builder.RegisterType<LifeLogCrawler>().As<ILifeLogCrawler>();
                 builder.RegisterType<IFTTTService>().As<IIFTTTService>();
