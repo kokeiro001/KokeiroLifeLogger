@@ -54,13 +54,13 @@ namespace KokeiroLifeLogger
                     return new BlogAnalytcsService(
                         config["HatebuViewId"],
                         config["QiitaViewId"],
-                        c.Resolve<IGoogleAnalyticsReader>()
+                        c.Resolve<IGoogleAnalyticsService>()
                     );
                 })
                 .As<IBlogAnalytcsService>();
 
                 builder.RegisterType<GitHubService>().As<IGitHubService>();
-                builder.RegisterType<GoogleAnalyticsReader>().As<IGoogleAnalyticsReader>();
+                builder.RegisterType<GoogleAnalyticsService>().As<IGoogleAnalyticsService>();
                 builder.RegisterType<LifeLogCrawler>().As<ILifeLogCrawler>();
                 builder.RegisterType<IFTTTService>().As<IIFTTTService>();
                 builder.RegisterType<LifeLogCrawler>().As<ILifeLogCrawler>();

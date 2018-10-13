@@ -12,12 +12,12 @@ namespace KokeiroLifeLogger.Services
     {
         private readonly string hatenaViewId;
         private readonly string qiitaViewId;
-        private readonly IGoogleAnalyticsReader googleAnalyticsReader;
+        private readonly IGoogleAnalyticsService googleAnalyticsReader;
 
         public BlogAnalytcsService(
             string hatenaViewId, 
             string qiitaViewId,
-            IGoogleAnalyticsReader googleAnalyticsReader
+            IGoogleAnalyticsService googleAnalyticsReader
         )
         {
             this.hatenaViewId = hatenaViewId;

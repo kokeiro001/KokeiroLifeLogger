@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services
 {
-    public interface IGoogleAnalyticsReader
+    public interface IGoogleAnalyticsService
     {
         Task<int> ReadPv(string viewId, DateTime date);
     }
 
-    public class GoogleAnalyticsReader : IGoogleAnalyticsReader
+    public class GoogleAnalyticsService : IGoogleAnalyticsService
     {
         static readonly string AppName = @"KokeiroLifeLogger";
         static readonly string KeyFileContainerName = @"etc";
@@ -26,7 +26,7 @@ namespace KokeiroLifeLogger.Services
 
         string GoogleServiceAccount { get => configProvider.GetConfig()["BlogPvServicerAccount"]; }
 
-        public GoogleAnalyticsReader(
+        public GoogleAnalyticsService(
             ICloudStorageAccountProvider cloudStorageAccountProvider,
             IConfigProvider configProvider
         )
@@ -67,7 +67,7 @@ namespace KokeiroLifeLogger.Services
             return service;
         }
 
-        async Task<byte[]> LoadApiKeyFileAsync()
+        private async Task<byte[]> LoadApiKeyFileAsync()
         {
             var storageAccount = cloudStorageAccountProvider.GetCloudStorageAccount();
             var blobClient = storageAccount.CreateCloudBlobClient();
