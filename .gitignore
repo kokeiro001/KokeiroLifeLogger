@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 KokeiroLifeLogger/Properties/PublishProfiles/
+
+KokeiroLifeLogger\.Test/appsettings\.test\.json
