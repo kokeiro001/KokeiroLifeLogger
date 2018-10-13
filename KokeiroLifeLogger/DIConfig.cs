@@ -77,6 +77,19 @@ namespace KokeiroLifeLogger
                 })
                 .As<IMailService>();
 
+                builder.Register<PostDiary2MixiService>(c =>
+                {
+                    var config = c.Resolve<IConfigProvider>().GetConfig();
+                    var sendTo = config["MixiPostMailTo"];
+
+                    return new PostDiary2MixiService(
+                        c.Resolve<ILifeLogService>(),
+                        c.Resolve<IMailService>(),
+                        sendTo
+                    );
+                })
+                .As<IPostDiary2MixiService>();
+
             }, functionName);
         }
     }
