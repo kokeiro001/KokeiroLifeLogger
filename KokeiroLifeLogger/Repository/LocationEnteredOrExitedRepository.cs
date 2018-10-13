@@ -31,7 +31,7 @@ namespace KokeiroLifeLogger.Repository
     class LocationEnteredOrExitedRepository : StorageTableRepository<LocationEnteredOrExitedEntity>, ILocationEnteredOrExitedRepository
     {
         public LocationEnteredOrExitedRepository(ICloudStorageAccountProvider cloudStorageAccountProvider) 
-            : base(cloudStorageAccountProvider.GetCloudStorageAccount(), "locationEnteredOrExited")
+            : base(cloudStorageAccountProvider, "locationEnteredOrExited")
         {
         }
     }

@@ -33,7 +33,7 @@ namespace KokeiroLifeLogger.Repository
     public class NicoNicoMyListRepository : StorageTableRepository<NicoNicoMyListEntity>, INicoNicoMyListRepository
     {
         public NicoNicoMyListRepository(ICloudStorageAccountProvider cloudStorageAccountProvider) 
-            : base(cloudStorageAccountProvider.GetCloudStorageAccount(), @"nicoNicoMyList")
+            : base(cloudStorageAccountProvider, @"nicoNicoMyList")
         {
         }
     }

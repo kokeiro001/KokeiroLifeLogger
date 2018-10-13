@@ -31,7 +31,7 @@ namespace KokeiroLifeLogger.Repository
     public class IFTTTRepository : StorageTableRepository<IFTTTEntity>, IIFTTTRepository
     {
         public IFTTTRepository(ICloudStorageAccountProvider cloudStorageAccountProvider)
-            : base(cloudStorageAccountProvider.GetCloudStorageAccount(), "ifttt")
+            : base(cloudStorageAccountProvider, "ifttt")
         {
         }
 

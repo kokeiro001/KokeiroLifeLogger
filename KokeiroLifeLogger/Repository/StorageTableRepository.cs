@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using KokeiroLifeLogger.Services;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System.Threading.Tasks;
 
@@ -13,8 +14,9 @@ namespace KokeiroLifeLogger.Repository
     {
         protected CloudTable CloudTable { get; }
 
-        public StorageTableRepository(CloudStorageAccount cloudStorageAccount, string tableName)
+        public StorageTableRepository(ICloudStorageAccountProvider cloudStorageAccountProvider, string tableName)
         {
+            var cloudStorageAccount = cloudStorageAccountProvider.GetCloudStorageAccount();
             var tableClient = cloudStorageAccount.CreateCloudTableClient();
             CloudTable = tableClient.GetTableReference(tableName);
         }
