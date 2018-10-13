@@ -29,8 +29,6 @@ namespace KokeiroLifeLogger.Functions.Test
 
             logger.LogInformation($"Title={lifeLog.Title}, Body={lifeLog.Body}");
 
-            var json = JsonConvert.SerializeObject(lifeLog);
-
             return new OkObjectResult(lifeLog.Body);
         }
     }
