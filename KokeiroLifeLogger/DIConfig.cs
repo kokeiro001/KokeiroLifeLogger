@@ -69,14 +69,14 @@ namespace KokeiroLifeLogger
                 builder.RegisterType<WeightMeasurementService>().As<IWeightMeasurementService>();
                 builder.RegisterType<WithingsSleepService>().As<IWithingsSleepService>();
 
-                builder.Register<MailSender>(c =>
+                builder.Register<GmailService>(c =>
                 {
                     var config = c.Resolve<IConfigProvider>().GetConfig();
                     var from = config["MixiPostMail"];
                     var password = config["MixiPostMailPassword"];
-                    return new MailSender(from, password);
+                    return new GmailService(from, password);
                 })
-                .As<IMailSender>();
+                .As<IMailService>();
 
             }, functionName);
         }

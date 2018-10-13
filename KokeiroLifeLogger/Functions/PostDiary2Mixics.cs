@@ -19,7 +19,7 @@ namespace KokeiroLifeLogger.Functions
             [TimerTrigger("0 0 20 * * *")]TimerInfo myTimer, 
             ILogger logger,
             [Inject]ILifeLogCrawler lifeLogCrawler,
-            [Inject]IMailSender mailSender,
+            [Inject]IMailService mailSender,
             [Inject]IConfigProvider configProvider
         )
         {

@@ -3,17 +3,17 @@ using System.Net.Mail;
 
 namespace KokeiroLifeLogger.Services
 {
-    public interface IMailSender
+    public interface IMailService
     {
         void Send(string to, string subject, string body);
     }
 
-    public class MailSender : IMailSender
+    public class GmailService : IMailService
     {
         private readonly string from;
         private readonly string password;
 
-        public MailSender(string from, string password)
+        public GmailService(string from, string password)
         {
             this.from = from;
             this.password = password;
