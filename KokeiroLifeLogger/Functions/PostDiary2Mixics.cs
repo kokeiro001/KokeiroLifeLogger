@@ -25,7 +25,6 @@ namespace KokeiroLifeLogger.Functions
         {
             // TODO: これもBinderに移したい
             var config = configProvider.GetConfig();
-            var from = config["MixiPostMail"];
             var to = config["MixiPostMailTo"];
 
             var lifeLog = await lifeLogCrawler.CrawlAsync();
