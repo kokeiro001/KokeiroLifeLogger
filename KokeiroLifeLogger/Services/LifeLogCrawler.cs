@@ -15,14 +15,14 @@ namespace KokeiroLifeLogger.Services
 
     public class LifeLogCrawler : ILifeLogCrawler
     {
-        private readonly IBlogPvStringLoader blogPvStringLoader;
+        private readonly IBlogAnalytcsService blogPvStringLoader;
         private readonly IIFTTTService iftttService;
         private readonly IWeightMeasurementService weightMeasurementService;
         private readonly IGitHubContributionsReader gitHubContributionsReader;
         private readonly IWithingsSleepService withingsSleepService;
 
         public LifeLogCrawler(
-            IBlogPvStringLoader blogPvStringLoader,
+            IBlogAnalytcsService blogPvStringLoader,
             IIFTTTService iftttService,
             IWeightMeasurementService weightMeasurementService,
             IGitHubContributionsReader gitHubContributionsReader,
@@ -94,7 +94,7 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var pvInfo = await blogPvStringLoader.LoadAsync();
+                var pvInfo = await blogPvStringLoader.LoadPvInfoAsync();
                 sb.AppendLine($"はてなブログのPV数：{pvInfo.Hatena}");
                 sb.AppendLine($"QiitaのPV数：{pvInfo.Qiita}");
             }

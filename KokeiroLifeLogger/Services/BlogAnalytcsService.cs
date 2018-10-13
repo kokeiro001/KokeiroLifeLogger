@@ -3,18 +3,18 @@ using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services
 {
-    public interface IBlogPvStringLoader
+    public interface IBlogAnalytcsService
     {
-        Task<BlogPvInfo> LoadAsync();
+        Task<BlogPvInfo> LoadPvInfoAsync();
     }
 
-    public class BlogPvStringLoader : IBlogPvStringLoader
+    public class BlogAnalytcsService : IBlogAnalytcsService
     {
         private readonly string hatenaViewId;
         private readonly string qiitaViewId;
         private readonly IGoogleAnalyticsReader googleAnalyticsReader;
 
-        public BlogPvStringLoader(
+        public BlogAnalytcsService(
             string hatenaViewId, 
             string qiitaViewId,
             IGoogleAnalyticsReader googleAnalyticsReader
@@ -25,7 +25,7 @@ namespace KokeiroLifeLogger.Services
             this.googleAnalyticsReader = googleAnalyticsReader;
         }
 
-        public async Task<BlogPvInfo> LoadAsync()
+        public async Task<BlogPvInfo> LoadPvInfoAsync()
         {
             var date = DateTime.UtcNow.AddHours(9).AddDays(-1);
 

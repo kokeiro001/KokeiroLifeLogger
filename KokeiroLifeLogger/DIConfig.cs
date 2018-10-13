@@ -47,17 +47,17 @@ namespace KokeiroLifeLogger
                 builder.RegisterType<WeightMeasurementRepository>().As<IWeightMeasurementRepository>();
                 builder.RegisterType<WithingsSleepRepository>().As<IWithingsSleepRepository>();
 
-                builder.Register<BlogPvStringLoader>(c =>
+                builder.Register<BlogAnalytcsService>(c =>
                 {
                     var config = c.Resolve<IConfigProvider>().GetConfig();
 
-                    return new BlogPvStringLoader(
+                    return new BlogAnalytcsService(
                         config["HatebuViewId"],
                         config["QiitaViewId"],
                         c.Resolve<IGoogleAnalyticsReader>()
                     );
                 })
-                .As<IBlogPvStringLoader>();
+                .As<IBlogAnalytcsService>();
 
                 builder.RegisterType<GitHubContributionsReader>().As<IGitHubContributionsReader>();
                 builder.RegisterType<GoogleAnalyticsReader>().As<IGoogleAnalyticsReader>();
