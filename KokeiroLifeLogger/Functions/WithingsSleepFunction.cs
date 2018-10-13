@@ -10,16 +10,18 @@ using Newtonsoft.Json;
 using KokeiroLifeLogger.Utilities;
 using KokeiroLifeLogger.Repository;
 using KokeiroLifeLogger.Services;
+using AzureFunctions.Autofac;
 
 namespace KokeiroLifeLogger.Functions
 {
+    [DependencyInjectionConfig(typeof(DIConfig))]
     public static class WithingsSleepFunction
     {
-        [FunctionName("WithingsSleepFunction")]
+        [FunctionName("withingssleep")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]HttpRequest req, 
             ILogger logger,
-            IWithingsSleepService withingsSleepService
+            [Inject]IWithingsSleepService withingsSleepService
         )
         {
             logger.LogInformation("C# HTTP trigger function processed a request.");
@@ -29,7 +31,7 @@ namespace KokeiroLifeLogger.Functions
 
             var withingsSleepRequest = JsonConvert.DeserializeObject<WighingsSleepRequest>(json);
 
-            var date = DateTimeParser.ParseWithingsDate(withingsSleepRequest.DateTime);
+            var date = DateTimeParser.ParseWithingsDate(withingsSleepRequest.DateAndTime);
 
             var now = DateTime.UtcNow;
             var entity = new WithingsSleepEntity("withingsSleepEntity", now.Ticks.ToString())
@@ -50,6 +52,6 @@ namespace KokeiroLifeLogger.Functions
     public class WighingsSleepRequest
     {
         public string Action { get; set; }
-        public string DateTime { get; set; }
+        public string DateAndTime { get; set; }
     }
 }

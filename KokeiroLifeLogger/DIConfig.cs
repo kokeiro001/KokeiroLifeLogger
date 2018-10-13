@@ -45,6 +45,7 @@ namespace KokeiroLifeLogger
                 builder.RegisterType<IFTTTRepository>().As<IIFTTTRepository>();
                 builder.RegisterType<LocationEnteredOrExitedRepository>().As<ILocationEnteredOrExitedRepository>();
                 builder.RegisterType<WeightMeasurementRepository>().As<IWeightMeasurementRepository>();
+                builder.RegisterType<WithingsSleepRepository>().As<IWithingsSleepRepository>();
 
                 builder.Register<BlogPvStringLoader>(c =>
                 {
@@ -66,6 +67,7 @@ namespace KokeiroLifeLogger
                 builder.RegisterType<LocationEnteredOrExitedService>().As<ILocationEnteredOrExitedService>();
                 builder.RegisterType<NicoNicoMyListObserveService>().As<INicoNicoMyListObserveService>();
                 builder.RegisterType<WeightMeasurementService>().As<IWeightMeasurementService>();
+                builder.RegisterType<WithingsSleepService>().As<IWithingsSleepService>();
 
                 builder.Register<MailSender>(c =>
                 {
