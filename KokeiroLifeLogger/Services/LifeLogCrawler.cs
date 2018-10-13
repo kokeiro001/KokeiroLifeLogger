@@ -19,18 +19,21 @@ namespace KokeiroLifeLogger.Services
         private readonly IIFTTTService iftttService;
         private readonly IWeightMeasurementService weightMeasurementService;
         private readonly IGitHubContributionsReader gitHubContributionsReader;
+        private readonly IWithingsSleepService withingsSleepService;
 
         public LifeLogCrawler(
             IBlogPvStringLoader blogPvStringLoader,
             IIFTTTService iftttService,
             IWeightMeasurementService weightMeasurementService,
-            IGitHubContributionsReader gitHubContributionsReader
+            IGitHubContributionsReader gitHubContributionsReader,
+            IWithingsSleepService withingsSleepService
         )
         {
             this.blogPvStringLoader = blogPvStringLoader;
             this.iftttService = iftttService;
             this.weightMeasurementService = weightMeasurementService;
             this.gitHubContributionsReader = gitHubContributionsReader;
+            this.withingsSleepService = withingsSleepService;
         }
 
         private string GetTitle()
@@ -42,8 +45,8 @@ namespace KokeiroLifeLogger.Services
         {
             var now = DateTime.UtcNow;
 
-            var from = now.AddDays(-1);
-            var to = now;
+            var fromDate = now.AddDays(-1);
+            var toDate = now;
 
             var sb = new StringBuilder();
 
@@ -53,7 +56,7 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var iftttData = await iftttService.GetDataByDate(from, to);
+                var iftttData = await iftttService.GetDataByDate(fromDate, toDate);
                 AppendStringByPartitionKey(iftttData, sb, "pocket", "Pocketに突っ込んだ記事");
                 AppendStringTwitterLiked(iftttData, sb);
                 AppendStringByPartitionKey(iftttData, sb, "github_star", "GitHubでStarつけたリポジトリ");
@@ -68,7 +71,7 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var weightMeasurement = await weightMeasurementService.GetByDate(from, to);
+                var weightMeasurement = await weightMeasurementService.GetByDate(fromDate, toDate);
                 if (weightMeasurement != null)
                 {
                     sb.AppendLine($"体重:{weightMeasurement.Weight}kg");
@@ -105,19 +108,46 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var githubContribution = await gitHubContributionsReader.GetContributionsAsync(to, "kokeiro001");
+                var githubContribution = await gitHubContributionsReader.GetContributionsAsync(toDate, "kokeiro001");
 
                 sb.AppendLine($"GitHubのコントリビューション数：{githubContribution.Contributions}");
                 sb.AppendLine($"TargetDate：{githubContribution.Date}");
-                sb.AppendLine();
             }
             catch (Exception e)
             {
                 sb.AppendLine(e.Message);
             }
 
+
+            sb.AppendLine();
+            sb.AppendLine("-------------------------------------");
+
+            try
+            {
+                var intoBedData = await withingsSleepService.GetIntoBedDataByDate(fromDate, toDate);
+                var outBedData = await withingsSleepService.GetOutBedDataByDate(fromDate, toDate);
+
+                var intoBedList = intoBedData
+                    .Select(x => $"- {x.Date.ToString()}")
+                    .JoinString("\n");
+
+                var outBedList = outBedData
+                    .Select(x => $"- {x.Date.ToString()}")
+                    .JoinString("\n");
+
+                sb.AppendLine($"布団入った時間\n{intoBedList}");
+                sb.AppendLine();
+                sb.AppendLine($"布団から出た時間\n{outBedList}");
+            }
+            catch (Exception e)
+            {
+                sb.AppendLine(e.Message);
+            }
+
+            sb.AppendLine();
             return sb.ToString();
         }
+
         private void AppendStringByPartitionKey(IEnumerable<IFTTTEntity> items, StringBuilder sb, string key, string title)
         {
             sb.AppendLine("-------------------------------------");
