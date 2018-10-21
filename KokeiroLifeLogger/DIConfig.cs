@@ -44,6 +44,7 @@ namespace KokeiroLifeLogger
 
                 builder.RegisterType<IFTTTRepository>().As<IIFTTTRepository>();
                 builder.RegisterType<LocationEnteredOrExitedRepository>().As<ILocationEnteredOrExitedRepository>();
+                builder.RegisterType<NicoNicoMyListRepository>().As<INicoNicoMyListRepository>();
                 builder.RegisterType<WeightMeasurementRepository>().As<IWeightMeasurementRepository>();
                 builder.RegisterType<WithingsSleepRepository>().As<IWithingsSleepRepository>();
 
