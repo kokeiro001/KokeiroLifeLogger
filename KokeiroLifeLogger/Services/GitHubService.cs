@@ -13,7 +13,7 @@ namespace KokeiroLifeLogger.Services
         Task<ContributionItem> GetContributionsAsync(DateTime date, string username);
     }
 
-    class GitHubService : IGitHubService
+    public class GitHubService : IGitHubService
     {
         static readonly string HostUrl = @"https://github.com/";
         static HttpClient httpClient = new HttpClient();
