@@ -2,13 +2,10 @@
 using AzureFunctions.Autofac.Configuration;
 using KokeiroLifeLogger.Repositories;
 using KokeiroLifeLogger.Services;
-using Microsoft.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
-using System.Configuration;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 
 namespace KokeiroLifeLogger
 {
@@ -31,7 +28,7 @@ namespace KokeiroLifeLogger
                     return new ConfigProvider(config);
                 })
                 .As<IConfigProvider>();
-
+                
                 builder.Register<CloudStorageAccountProvider>(c =>
                 {
                     var config = c.Resolve<IConfigProvider>().GetConfig();

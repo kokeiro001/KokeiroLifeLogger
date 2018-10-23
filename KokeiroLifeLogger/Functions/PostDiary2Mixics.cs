@@ -1,6 +1,4 @@
 using Microsoft.Azure.WebJobs;
-using System.Configuration;
-using Microsoft.Azure;
 using System.Threading.Tasks;
 using KokeiroLifeLogger.Services;
 using Microsoft.Extensions.Logging;
