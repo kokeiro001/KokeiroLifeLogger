@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using KokeiroLifeLogger.Repository;
+using KokeiroLifeLogger.Repositories;
 using KokeiroLifeLogger.Services;
 using AzureFunctions.Autofac;
 

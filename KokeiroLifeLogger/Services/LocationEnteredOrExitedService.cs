@@ -1,4 +1,4 @@
-﻿using KokeiroLifeLogger.Repository;
+﻿using KokeiroLifeLogger.Repositories;
 using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services

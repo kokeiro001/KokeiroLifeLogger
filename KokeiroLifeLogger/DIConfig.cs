@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using AzureFunctions.Autofac.Configuration;
-using KokeiroLifeLogger.Repository;
+using KokeiroLifeLogger.Repositories;
 using KokeiroLifeLogger.Services;
 using Microsoft.Azure;
 using Microsoft.Extensions.Configuration;

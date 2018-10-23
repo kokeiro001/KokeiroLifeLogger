@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using KokeiroLifeLogger.Utilities;
-using KokeiroLifeLogger.Repository;
+using KokeiroLifeLogger.Repositories;
 using KokeiroLifeLogger.Services;
 using AzureFunctions.Autofac;
 

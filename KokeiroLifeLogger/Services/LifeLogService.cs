@@ -1,4 +1,4 @@
-﻿using KokeiroLifeLogger.Repository;
+﻿using KokeiroLifeLogger.Repositories;
 using KokeiroLifeLogger.Utilities;
 using System;
 using System.Collections.Generic;

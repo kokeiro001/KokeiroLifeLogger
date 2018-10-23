@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KokeiroLifeLogger.Repository
+namespace KokeiroLifeLogger.Repositories
 {
     public class WithingsSleepEntity : TableEntity
     {

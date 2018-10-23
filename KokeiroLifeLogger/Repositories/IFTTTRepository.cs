@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KokeiroLifeLogger.Repository
+namespace KokeiroLifeLogger.Repositories
 {
     public class IFTTTEntity : TableEntity
     {

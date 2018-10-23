@@ -2,7 +2,7 @@
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
 
-namespace KokeiroLifeLogger.Repository
+namespace KokeiroLifeLogger.Repositories
 {
 
     public class LocationEnteredOrExitedEntity : TableEntity

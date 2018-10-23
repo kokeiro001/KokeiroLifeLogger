@@ -1,4 +1,4 @@
-﻿using KokeiroLifeLogger.Repository;
+﻿using KokeiroLifeLogger.Repositories;
 using KokeiroLifeLogger.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;

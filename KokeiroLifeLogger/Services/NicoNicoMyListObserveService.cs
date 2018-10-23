@@ -1,5 +1,5 @@
 ﻿using AngleSharp.Parser.Html;
-using KokeiroLifeLogger.Repository;
+using KokeiroLifeLogger.Repositories;
 using KokeiroLifeLogger.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;

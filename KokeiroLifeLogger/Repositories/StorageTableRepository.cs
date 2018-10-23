@@ -3,7 +3,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System.Threading.Tasks;
 
-namespace KokeiroLifeLogger.Repository
+namespace KokeiroLifeLogger.Repositories
 {
     public interface IStorageTableRepository<T> where T : TableEntity
     {

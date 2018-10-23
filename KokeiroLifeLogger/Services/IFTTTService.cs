@@ -1,5 +1,5 @@
 ﻿using EnsureThat;
-using KokeiroLifeLogger.Repository;
+using KokeiroLifeLogger.Repositories;
 using Microsoft.Azure.WebJobs.Description;
 using Microsoft.Azure.WebJobs.Host.Config;
 using Microsoft.Extensions.Logging;
