@@ -53,7 +53,7 @@ namespace KokeiroLifeLogger.Services
 
             var json = targetLine
                 .Trim()
-                .TrimStarts(@"Mylist.preload\(63412739, ")
+                .TrimStarts($@"Mylist.preload\({myListId}, ")
                 .TrimEnds(@"\);");
 
             var dezerializerSettings = new JsonSerializerSettings
