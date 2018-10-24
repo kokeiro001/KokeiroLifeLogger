@@ -1,0 +1,15 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "AzureWebJobsStorage": "",
+
+    "BlogPvServicerAccount": "",
+    "HatebuViewId": "",
+    "QiitaViewId": "",
+
+    "MixiPostMail": "",
+    "MixiPostMailPassword": "",
+    "MixiPostMailTo": ""
+  }
+}
