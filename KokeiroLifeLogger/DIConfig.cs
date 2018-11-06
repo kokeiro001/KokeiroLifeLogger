@@ -44,6 +44,7 @@ namespace KokeiroLifeLogger
                 builder.RegisterType<NicoNicoMyListRepository>().As<INicoNicoMyListRepository>();
                 builder.RegisterType<WeightMeasurementRepository>().As<IWeightMeasurementRepository>();
                 builder.RegisterType<WithingsSleepRepository>().As<IWithingsSleepRepository>();
+                builder.RegisterType<ThermohygrometerRepository>().As<IThermohygrometerRepository>();
 
                 builder.Register<BlogAnalytcsService>(c =>
                 {
@@ -65,6 +66,7 @@ namespace KokeiroLifeLogger
                 builder.RegisterType<NicoNicoMyListObserveService>().As<INicoNicoMyListObserveService>();
                 builder.RegisterType<WeightMeasurementService>().As<IWeightMeasurementService>();
                 builder.RegisterType<WithingsSleepService>().As<IWithingsSleepService>();
+                builder.RegisterType<ThermohygrometerService>().As<IThermohygrometerService>();
 
                 builder.Register<GmailService>(c =>
                 {

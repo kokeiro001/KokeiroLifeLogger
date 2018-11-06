@@ -16,9 +16,16 @@ namespace KokeiroLifeLogger.Functions
         public static async Task Run(
             [TimerTrigger("0 0 20 * * *")]TimerInfo myTimer, 
             ILogger logger,
-            [Inject]IPostDiary2MixiService postDiary2MixiService
+            [Inject]IPostDiary2MixiService postDiary2MixiService,
+            [Inject]IConfigProvider configProvider
         )
         {
+            var config = configProvider.GetConfig();
+
+            if (config["IsLocal"] == "true")
+            {
+                return;
+            }
             await postDiary2MixiService.PostDiary();
         }
     }

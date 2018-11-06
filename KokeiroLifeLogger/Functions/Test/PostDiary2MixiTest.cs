@@ -16,10 +16,15 @@ namespace KokeiroLifeLogger.Functions.Test
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger logger,
-            [Inject]ILifeLogService lifeLogCrawler
+            [Inject]ILifeLogService lifeLogCrawler,
+            [Inject]IConfigProvider configProvider
         )
         {
-            logger.LogInformation("C# HTTP trigger function processed a request.");
+            var config = configProvider.GetConfig();
+            if (config["IsLocal"] == "true")
+            {
+                return new OkResult();
+            }
 
             var lifeLog = await lifeLogCrawler.CrawlAsync();
 
