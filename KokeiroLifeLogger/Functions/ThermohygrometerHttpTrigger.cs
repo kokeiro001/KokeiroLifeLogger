@@ -48,8 +48,8 @@ namespace KokeiroLifeLogger.Functions
         private class RequestThermohygrometer
         {
             public string Location { get; set; }
-            public int Temperature { get; set; }
-            public int Humidity { get; set; }
+            public double Temperature { get; set; }
+            public double Humidity { get; set; }
             public DateTime MesuredAt { get; set; }
         }
     }
