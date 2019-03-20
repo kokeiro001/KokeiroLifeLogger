@@ -262,3 +262,5 @@ __pycache__/
 KokeiroLifeLogger/Properties/PublishProfiles/
 
 KokeiroLifeLogger\.Test/appsettings\.test\.json
+
+KokeiroLifeLogger/StyleCop\.Cache
