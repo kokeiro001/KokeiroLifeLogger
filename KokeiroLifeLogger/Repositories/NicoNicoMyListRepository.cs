@@ -4,7 +4,6 @@ using System;
 
 namespace KokeiroLifeLogger.Repositories
 {
-
     public class NicoNicoMyListEntity : TableEntity
     {
         public string Title { get; set; }

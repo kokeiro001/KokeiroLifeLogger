@@ -4,7 +4,6 @@ using System;
 
 namespace KokeiroLifeLogger.Repositories
 {
-
     public class LocationEnteredOrExitedEntity : TableEntity
     {
         public string Location { get; set; }

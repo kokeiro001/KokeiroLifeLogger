@@ -91,7 +91,6 @@ namespace KokeiroLifeLogger.Services
         }
     }
 
-
     public class MyListItem
     {
         public int ItemType { get; set; }
@@ -119,5 +118,4 @@ namespace KokeiroLifeLogger.Services
         public string LastResBody { get; set; }
         public string WatchId { get; set; }
     }
-
 }

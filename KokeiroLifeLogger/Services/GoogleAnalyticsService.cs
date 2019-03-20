@@ -78,7 +78,6 @@ namespace KokeiroLifeLogger.Services
             await blob.DownloadToByteArrayAsync(content, 0);
 
             return content;
-
         }
     }
 }

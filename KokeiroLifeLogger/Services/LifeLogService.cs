@@ -66,7 +66,6 @@ namespace KokeiroLifeLogger.Services
                 sb.AppendLine(e.Message);
             }
 
-
             sb.AppendLine("-------------------------------------");
 
             try
@@ -94,9 +93,9 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var pvInfo = await blogPvStringLoader.LoadPvInfoAsync();
-                sb.AppendLine($"はてなブログのPV数：{pvInfo.Hatena}");
-                sb.AppendLine($"QiitaのPV数：{pvInfo.Qiita}");
+                var pageViewInfo = await blogPvStringLoader.LoadPvInfoAsync();
+                sb.AppendLine($"はてなブログのPV数：{pageViewInfo.Hatena}");
+                sb.AppendLine($"QiitaのPV数：{pageViewInfo.Qiita}");
             }
             catch (Exception e)
             {
@@ -117,7 +116,6 @@ namespace KokeiroLifeLogger.Services
             {
                 sb.AppendLine(e.Message);
             }
-
 
             sb.AppendLine();
             sb.AppendLine("-------------------------------------");
@@ -209,7 +207,7 @@ namespace KokeiroLifeLogger.Services
 
     public class LifeLog
     {
-        public string Title;
-        public string Body;
+        public string Title { get; set; }
+        public string Body { get; set; }
     }
 }

@@ -1,14 +1,14 @@
+using AzureFunctions.Autofac;
+using KokeiroLifeLogger.Repositories;
+using KokeiroLifeLogger.Services;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using System;
-using Newtonsoft.Json;
-using Microsoft.Extensions.Logging;
-using KokeiroLifeLogger.Services;
-using KokeiroLifeLogger.Repositories;
-using AzureFunctions.Autofac;
 
 namespace KokeiroLifeLogger.Functions
 {

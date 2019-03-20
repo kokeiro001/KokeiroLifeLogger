@@ -1,8 +1,8 @@
-using Microsoft.Azure.WebJobs;
-using System.Threading.Tasks;
-using KokeiroLifeLogger.Services;
-using Microsoft.Extensions.Logging;
 using AzureFunctions.Autofac;
+using KokeiroLifeLogger.Services;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Functions
 {

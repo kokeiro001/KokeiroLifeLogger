@@ -53,8 +53,7 @@ namespace KokeiroLifeLogger
                     return new BlogAnalytcsService(
                         config["HatebuViewId"],
                         config["QiitaViewId"],
-                        c.Resolve<IGoogleAnalyticsService>()
-                    );
+                        c.Resolve<IGoogleAnalyticsService>());
                 })
                 .As<IBlogAnalytcsService>();
 
@@ -85,12 +84,11 @@ namespace KokeiroLifeLogger
                     return new PostDiary2MixiService(
                         c.Resolve<ILifeLogService>(),
                         c.Resolve<IMailService>(),
-                        sendTo
-                    );
+                        sendTo);
                 })
                 .As<IPostDiary2MixiService>();
-
-            }, functionName);
+            },
+            functionName);
         }
     }
 

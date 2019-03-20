@@ -264,3 +264,5 @@ KokeiroLifeLogger/Properties/PublishProfiles/
 KokeiroLifeLogger\.Test/appsettings\.test\.json
 
 KokeiroLifeLogger/StyleCop\.Cache
+
+KokeiroLifeLogger\.Test/StyleCop\.Cache

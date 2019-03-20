@@ -1,14 +1,14 @@
-using System.Net;
-using System.Net.Http;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using System.Threading.Tasks;
-using System;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using AzureFunctions.Autofac;
 using KokeiroLifeLogger.Repositories;
 using KokeiroLifeLogger.Services;
-using AzureFunctions.Autofac;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Functions
 {
@@ -48,5 +48,4 @@ namespace KokeiroLifeLogger.Functions
         public string Url { get; set; }
         public string From { get; set; }
     }
-
 }

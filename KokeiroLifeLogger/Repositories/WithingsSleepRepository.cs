@@ -39,7 +39,6 @@ namespace KokeiroLifeLogger.Repositories
         {
         }
 
-
         private async Task<WithingsSleepEntity[]> GetByDate(DateTime from, DateTime to)
         {
             var propertyName = nameof(WithingsSleepEntity.InsertedTime);
