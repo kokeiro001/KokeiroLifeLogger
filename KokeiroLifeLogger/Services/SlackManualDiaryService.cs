@@ -42,10 +42,9 @@ namespace KokeiroLifeLogger.Services
             var stringBuilder = new StringBuilder();
 
             stringBuilder.AppendLine($"(debug) DateTime.UtcNow=" + DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss"));
-            stringBuilder.AppendLine($"(debug) yesterday=" + yesterday.ToString("yyyy/MM/dd HH:mm:ss"));
 
             stringBuilder.AppendLine($"(debug) DateTime.UtcNow.AddHours(9)=" + DateTime.UtcNow.AddHours(9).ToString("yyyy/MM/dd HH:mm:ss"));
-            stringBuilder.AppendLine($"(debug) yesterday.AddHours(9)=" + yesterday.AddHours(9).ToString("yyyy/MM/dd HH:mm:ss"));
+            stringBuilder.AppendLine($"(debug) yesterday=" + yesterday.ToString("yyyy/MM/dd HH:mm:ss"));
 
             stringBuilder.AppendLine();
 
@@ -57,8 +56,23 @@ namespace KokeiroLifeLogger.Services
             {
                 if (targetMessage.ts >= yesterday)
                 {
-                    stringBuilder.AppendLine("(debug ts.AddHours(9)) " + targetMessage.ts.AddHours(9).ToString("yyyy/MM/dd HH:mm:ss"));
-                    stringBuilder.AppendLine(targetMessage.text);
+                    stringBuilder.AppendLine("(debug ts)) " + targetMessage.ts.ToString("yyyy/MM/dd HH:mm:ss"));
+
+                    var lines = targetMessage.text.Split('\n');
+
+                    foreach (var line in lines)
+                    {
+                        if (line.StartsWith("<http") && line.EndsWith(">"))
+                        {
+                            var url = line.TrimStart('<').TrimEnd('>');
+                            stringBuilder.AppendLine(url);
+                        }
+                        else
+                        {
+                            stringBuilder.AppendLine(line);
+                        }
+                    }
+
                     stringBuilder.AppendLine();
                 }
             }
