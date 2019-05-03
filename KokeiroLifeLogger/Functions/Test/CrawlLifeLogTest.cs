@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace KokeiroLifeLogger.Functions.Test
 {
     [DependencyInjectionConfig(typeof(DIConfig))]
-    public static class PostDiary2MixiTest
+    public static class CrawlLifeLogTest
     {
-        [FunctionName("PostDiary2MixiTest")]
+        [FunctionName("CrawlLifeLogTest")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger logger,
@@ -20,11 +20,7 @@ namespace KokeiroLifeLogger.Functions.Test
             [Inject]IConfigProvider configProvider
         )
         {
-            var config = configProvider.GetConfig();
-            if (config["IsLocal"] == "true")
-            {
-                return new OkResult();
-            }
+            configProvider.GetConfig();
 
             var lifeLog = await lifeLogCrawler.CrawlAsync();
 
