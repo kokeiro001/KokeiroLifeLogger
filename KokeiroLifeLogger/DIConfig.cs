@@ -57,6 +57,18 @@ namespace KokeiroLifeLogger
                 })
                 .As<IBlogAnalytcsService>();
 
+
+                builder.Register<SlackManualDiaryService>(c =>
+                {
+                    var config = c.Resolve<IConfigProvider>().GetConfig();
+
+                    return new SlackManualDiaryService(
+                        config["SlackDiaryOAuthAccessToken"]
+                    );
+                })
+                .As<ISlackManualDiaryService>();
+
+
                 builder.RegisterType<GitHubService>().As<IGitHubService>();
                 builder.RegisterType<GoogleAnalyticsService>().As<IGoogleAnalyticsService>();
                 builder.RegisterType<LifeLogService>().As<ILifeLogService>();

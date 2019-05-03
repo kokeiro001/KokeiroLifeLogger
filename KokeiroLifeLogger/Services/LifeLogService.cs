@@ -15,6 +15,7 @@ namespace KokeiroLifeLogger.Services
 
     public class LifeLogService : ILifeLogService
     {
+        private readonly ISlackManualDiaryService slackManualDiaryService;
         private readonly IBlogAnalytcsService blogPvStringLoader;
         private readonly IIFTTTService iftttService;
         private readonly IWeightMeasurementService weightMeasurementService;
@@ -22,6 +23,7 @@ namespace KokeiroLifeLogger.Services
         private readonly IWithingsSleepService withingsSleepService;
 
         public LifeLogService(
+            ISlackManualDiaryService slackManualDiaryService,
             IBlogAnalytcsService blogPvStringLoader,
             IIFTTTService iftttService,
             IWeightMeasurementService weightMeasurementService,
@@ -29,6 +31,7 @@ namespace KokeiroLifeLogger.Services
             IWithingsSleepService withingsSleepService
         )
         {
+            this.slackManualDiaryService = slackManualDiaryService;
             this.blogPvStringLoader = blogPvStringLoader;
             this.iftttService = iftttService;
             this.weightMeasurementService = weightMeasurementService;
@@ -49,6 +52,26 @@ namespace KokeiroLifeLogger.Services
             var toDate = now;
 
             var sb = new StringBuilder();
+
+            try
+            {
+                var manualDiary = await slackManualDiaryService.GetManualDiary();
+                if (string.IsNullOrEmpty(manualDiary))
+                {
+                    sb.AppendLine("(マニュアル日記はありません)");
+                }
+                else
+                {
+                    sb.AppendLine(manualDiary);
+                }
+            }
+            catch (Exception e)
+            {
+                sb.AppendLine(e.Message);
+            }
+            sb.AppendLine();
+            sb.AppendLine("-------------------------------------");
+            sb.AppendLine();
 
             sb.AppendLine("※自動ポストでぇ～す※");
             sb.AppendLine();

@@ -10,6 +10,8 @@
 
     "MixiPostMail": "",
     "MixiPostMailPassword": "",
-    "MixiPostMailTo": ""
+    "MixiPostMailTo": "",
+
+    "SlackDiaryOAuthAccessToken": ""
   }
 }
