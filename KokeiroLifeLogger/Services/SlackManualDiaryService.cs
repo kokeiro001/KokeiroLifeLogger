@@ -37,13 +37,11 @@ namespace KokeiroLifeLogger.Services
 
             var history = await client.GetChannelHistoryAsync(diaryChannel);
 
-            var yesterday = DateTime.UtcNow.AddHours(9).AddDays(-1);
+            var yesterday = DateTime.UtcNow.AddDays(-1);
 
             var stringBuilder = new StringBuilder();
 
             stringBuilder.AppendLine($"(debug) DateTime.UtcNow=" + DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss"));
-
-            stringBuilder.AppendLine($"(debug) DateTime.UtcNow.AddHours(9)=" + DateTime.UtcNow.AddHours(9).ToString("yyyy/MM/dd HH:mm:ss"));
             stringBuilder.AppendLine($"(debug) yesterday=" + yesterday.ToString("yyyy/MM/dd HH:mm:ss"));
 
             stringBuilder.AppendLine();
@@ -61,9 +59,11 @@ namespace KokeiroLifeLogger.Services
 
             foreach (var targetMessage in targetMessages)
             {
-                if (targetMessage.ts >= yesterday)
+                var messageUtc = targetMessage.ts.ToUniversalTime();
+
+                if (messageUtc >= yesterday)
                 {
-                    stringBuilder.AppendLine("(debug ts)) " + targetMessage.ts.ToString("yyyy/MM/dd HH:mm:ss"));
+                    stringBuilder.AppendLine("(debug messageUtc)) " + messageUtc.ToString("yyyy/MM/dd HH:mm:ss"));
 
                     var lines = targetMessage.text.Split('\n');
 
