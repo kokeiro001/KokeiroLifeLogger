@@ -50,7 +50,14 @@ namespace KokeiroLifeLogger.Services
 
             var targetMessages = history.messages
                 .Where(x => string.IsNullOrEmpty(x.subtype))
-                .Reverse();
+                .Reverse()
+                .ToArray();
+
+            if (targetMessages.Length == 0)
+            {
+                stringBuilder.AppendLine("(マニュアル日記はありません)");
+                return stringBuilder.ToString();
+            }
 
             foreach (var targetMessage in targetMessages)
             {
