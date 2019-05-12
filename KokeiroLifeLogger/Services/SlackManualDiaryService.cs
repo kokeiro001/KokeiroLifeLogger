@@ -41,21 +41,10 @@ namespace KokeiroLifeLogger.Services
 
             var stringBuilder = new StringBuilder();
 
-            stringBuilder.AppendLine($"(debug) DateTime.UtcNow=" + DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss"));
-            stringBuilder.AppendLine($"(debug) yesterday=" + yesterday.ToString("yyyy/MM/dd HH:mm:ss"));
-
-            stringBuilder.AppendLine();
-
             var targetMessages = history.messages
                 .Where(x => string.IsNullOrEmpty(x.subtype))
                 .Reverse()
                 .ToArray();
-
-            if (targetMessages.Length == 0)
-            {
-                stringBuilder.AppendLine("(マニュアル日記はありません)");
-                return stringBuilder.ToString();
-            }
 
             foreach (var targetMessage in targetMessages)
             {
@@ -63,7 +52,7 @@ namespace KokeiroLifeLogger.Services
 
                 if (messageUtc >= yesterday)
                 {
-                    stringBuilder.AppendLine("(debug messageUtc)) " + messageUtc.ToString("yyyy/MM/dd HH:mm:ss"));
+                    stringBuilder.AppendLine("(jst)) " + messageUtc.AddHours(9).ToString("yyyy/MM/dd HH:mm:ss"));
 
                     var lines = targetMessage.text.Split('\n');
 

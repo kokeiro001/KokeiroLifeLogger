@@ -55,7 +55,7 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var manualDiary = await slackManualDiaryService.GetManualDiary();
+                var manualDiary = (await slackManualDiaryService.GetManualDiary()).Trim();
                 if (string.IsNullOrEmpty(manualDiary))
                 {
                     sb.AppendLine("(マニュアル日記はありません)");
