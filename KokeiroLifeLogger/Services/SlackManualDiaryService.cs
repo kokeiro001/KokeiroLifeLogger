@@ -52,7 +52,7 @@ namespace KokeiroLifeLogger.Services
 
                 if (messageUtc >= yesterday)
                 {
-                    stringBuilder.AppendLine("(jst)) " + messageUtc.AddHours(9).ToString("yyyy/MM/dd HH:mm:ss"));
+                    stringBuilder.AppendLine("(jst) " + messageUtc.AddHours(9).ToString("yyyy/MM/dd HH:mm:ss"));
 
                     var lines = targetMessage.text.Split('\n');
 
