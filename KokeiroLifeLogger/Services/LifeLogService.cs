@@ -145,20 +145,10 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var intoBedData = await withingsSleepService.GetIntoBedDataByDate(fromDate, toDate);
-                var outBedData = await withingsSleepService.GetOutBedDataByDate(fromDate, toDate);
+                var text = await withingsSleepService.GetDiaryData(fromDate, toDate);
 
-                var intoBedList = intoBedData
-                    .Select(x => $"- {x.Date.ToString()}")
-                    .JoinString("\n");
+                sb.AppendLine(text);
 
-                var outBedList = outBedData
-                    .Select(x => $"- {x.Date.ToString()}")
-                    .JoinString("\n");
-
-                sb.AppendLine($"布団入った時間\n{intoBedList}");
-                sb.AppendLine();
-                sb.AppendLine($"布団から出た時間\n{outBedList}");
             }
             catch (Exception e)
             {
