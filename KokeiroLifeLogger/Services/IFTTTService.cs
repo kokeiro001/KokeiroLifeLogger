@@ -1,12 +1,5 @@
-﻿using EnsureThat;
-using KokeiroLifeLogger.Repositories;
-using Microsoft.Azure.WebJobs.Description;
-using Microsoft.Azure.WebJobs.Host.Config;
-using Microsoft.Extensions.Logging;
+﻿using KokeiroLifeLogger.Repositories;
 using System;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Services

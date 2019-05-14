@@ -32,7 +32,7 @@ namespace KokeiroLifeLogger.Repositories
                 LeanMass = (double)json["LeanMassKg"],
                 FatMass = (double)json["FatMassKg"],
                 FatPercent = (double)json["FatPercent"],
-                MesuredAt = DateTimeParser.ParseWithingsDate((string)json["MeasuredAt"]),
+                MesuredAt = DateTimeParser.ParseWithingsDate((string)json["MeasuredAt"]).AddHours(9), // jct -> utc
             };
         }
     }
@@ -53,7 +53,7 @@ namespace KokeiroLifeLogger.Repositories
         {
             await CloudTable.CreateIfNotExistsAsync();
 
-            var propertyName = nameof(WeightMesurementEntity.InsertedTime);
+            var propertyName = nameof(WeightMesurementEntity.MesuredAt);
             var filter1 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.GreaterThanOrEqual, from);
             var filter2 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.LessThanOrEqual, to);
 
