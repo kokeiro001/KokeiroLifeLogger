@@ -36,7 +36,7 @@ namespace KokeiroLifeLogger.Functions
             var entity = new WithingsSleepEntity("withingsSleepEntity", now.Ticks.ToString())
             {
                 Action = withingsSleepRequest.Action,
-                Date = date,
+                Date = date.AddHours(-9), // jst -> utc
                 InsertedTime = now,
             };
 

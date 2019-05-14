@@ -32,7 +32,7 @@ namespace KokeiroLifeLogger.Repositories
                 LeanMass = (double)json["LeanMassKg"],
                 FatMass = (double)json["FatMassKg"],
                 FatPercent = (double)json["FatPercent"],
-                MesuredAt = DateTimeParser.ParseWithingsDate((string)json["MeasuredAt"]).AddHours(9), // jct -> utc
+                MesuredAt = DateTimeParser.ParseWithingsDate((string)json["MeasuredAt"]).AddHours(-9), // jct -> utc
             };
         }
     }

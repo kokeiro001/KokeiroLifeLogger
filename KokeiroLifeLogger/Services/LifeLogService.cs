@@ -100,6 +100,8 @@ namespace KokeiroLifeLogger.Services
                     sb.AppendLine($"除脂肪体重:{weightMeasurement.LeanMass}kg");
                     sb.AppendLine($"体脂肪量:{weightMeasurement.FatMass}kg");
                     sb.AppendLine($"体脂肪率:{weightMeasurement.FatPercent}%");
+
+                    sb.AppendLine($"測定時間:" + weightMeasurement.MesuredAt.AddHours(9).ToString("yyyy/MM/dd HH:mm:ss"));
                 }
                 else
                 {

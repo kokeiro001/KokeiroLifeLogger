@@ -1,10 +1,7 @@
 ﻿using KokeiroLifeLogger.Services;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace KokeiroLifeLogger.Repositories
@@ -41,7 +38,7 @@ namespace KokeiroLifeLogger.Repositories
 
         private async Task<WithingsSleepEntity[]> GetByDate(DateTime from, DateTime to)
         {
-            var propertyName = nameof(WithingsSleepEntity.InsertedTime);
+            var propertyName = nameof(WithingsSleepEntity.Date);
             var filter1 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.GreaterThanOrEqual, from);
             var filter2 = TableQuery.GenerateFilterConditionForDate(propertyName, QueryComparisons.LessThanOrEqual, to);
 
