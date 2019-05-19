@@ -12,6 +12,9 @@
     "MixiPostMailPassword": "",
     "MixiPostMailTo": "",
 
-    "SlackDiaryOAuthAccessToken": ""
+    "SlackDiaryOAuthAccessToken": "",
+
+    "TrelloAppKey": "",
+    "TrelloUserToken": ""
   }
 }

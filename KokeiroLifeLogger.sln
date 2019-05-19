@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KokeiroLifeLogger", "KokeiroLifeLogger\KokeiroLifeLogger.csproj", "{CF3F474F-377F-4945-8B2B-55FBCD427E37}"
 EndProject

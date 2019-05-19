@@ -2,6 +2,7 @@
 using AzureFunctions.Autofac.Configuration;
 using KokeiroLifeLogger.Repositories;
 using KokeiroLifeLogger.Services;
+using Manatee.Trello;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using System.IO;
@@ -57,7 +58,6 @@ namespace KokeiroLifeLogger
                 })
                 .As<IBlogAnalytcsService>();
 
-
                 builder.Register<SlackManualDiaryService>(c =>
                 {
                     var config = c.Resolve<IConfigProvider>().GetConfig();
@@ -68,6 +68,16 @@ namespace KokeiroLifeLogger
                 })
                 .As<ISlackManualDiaryService>();
 
+                builder.Register<TrelloFactory>(c =>
+                {
+                    var config = c.Resolve<IConfigProvider>().GetConfig();
+
+                    TrelloAuthorization.Default.AppKey = config["TrelloAppKey"];
+                    TrelloAuthorization.Default.UserToken = config["TrelloUserToken"];
+
+                    return new TrelloFactory();
+                })
+                .As<ITrelloFactory>();
 
                 builder.RegisterType<GitHubService>().As<IGitHubService>();
                 builder.RegisterType<GoogleAnalyticsService>().As<IGoogleAnalyticsService>();
@@ -78,6 +88,7 @@ namespace KokeiroLifeLogger
                 builder.RegisterType<WeightMeasurementService>().As<IWeightMeasurementService>();
                 builder.RegisterType<WithingsSleepService>().As<IWithingsSleepService>();
                 builder.RegisterType<ThermohygrometerService>().As<IThermohygrometerService>();
+                builder.RegisterType<MyTweetService>().As<IMyTweetService>();
 
                 builder.Register<GmailService>(c =>
                 {
