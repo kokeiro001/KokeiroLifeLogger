@@ -36,7 +36,8 @@ namespace KokeiroLifeLogger.Services
                 return;
             }
 
-            var currentBoard = await GetCurrentBoard();
+            var jstNow = DateTime.UtcNow.AddHours(9);
+            var currentBoard = await GetBoard(jstNow);
 
             if (currentBoard == null)
             {
@@ -45,6 +46,7 @@ namespace KokeiroLifeLogger.Services
 
             await currentBoard.Refresh();
 
+            // Progressって名前のリストを取得する。予め用意しておく。
             var progressList = currentBoard.Lists
                 .Where(x => x.Name.ToLower() == "progress")
                 .FirstOrDefault();
@@ -54,16 +56,21 @@ namespace KokeiroLifeLogger.Services
                 return;
             }
 
-            var jstNow = DateTime.UtcNow.AddHours(9);
-            var date = jstNow.ToString("MMdd");
+            var cardPrefix = jstNow.ToString("MMdd");
 
             foreach (var todo in todos)
             {
-                var cardName = $"{date} {todo}";
+                var cardName = $"{cardPrefix} {todo}";
                 await progressList.Cards.Add(cardName);
             }
         }
 
+        /// <summary>
+        /// TODO
+        /// - やること1
+        /// - やること2
+        /// みたいなフォーマットのツイートから、「やること1」「やること2」を取得する
+        /// </summary>
         private IEnumerable<string> PasrseTodoTweet(TweetRequest tweet)
         {
             var lines = tweet.Text.Split('\n');
@@ -91,9 +98,16 @@ namespace KokeiroLifeLogger.Services
             return todo;
         }
 
-        private async Task<IBoard> GetCurrentBoard()
+        /// <summary>
+        /// yyyy MM/dd-MMdd
+        /// ってフォーマットのボード名の中から、
+        /// 現在の日付内のBoardを取得する。
+        /// ex)今日が5/16だったら「2019 5/14-5/21」って名前のボードを取得する
+        /// Boardの名前がそもそもフォーマット外だった場合、それは拾われない
+        /// </summary>
+        private async Task<IBoard> GetBoard(DateTime jstDateTime)
         {
-            Func<string, (DateTime? start, DateTime? end)> parseBoardDate = boardName => 
+            Func<string, (DateTime? start, DateTime? end)> parseBoardNameDate = boardName => 
             {
                 try
                 {
@@ -121,20 +135,18 @@ namespace KokeiroLifeLogger.Services
                 }
             };
 
-            var jstNow = DateTime.UtcNow.AddHours(9);
-
             var me = await trelloFactory.Me();
 
             foreach (var board in me.Boards)
             {
-                var (startDate, endDate) = parseBoardDate(board.Name);
+                var (startDate, endDate) = parseBoardNameDate(board.Name);
 
                 if (!startDate.HasValue || !endDate.HasValue)
                 {
                     continue;
                 }
 
-                if (jstNow >= startDate && jstNow <= endDate)
+                if (jstDateTime >= startDate && jstDateTime <= endDate)
                 {
                     return board;
                 }
