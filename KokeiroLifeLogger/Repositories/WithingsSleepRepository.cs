@@ -45,6 +45,7 @@ namespace KokeiroLifeLogger.Repositories
             var finalFilter = TableQuery.CombineFilters(filter1, "and", filter2);
 
             var query = new TableQuery<WithingsSleepEntity>().Where(finalFilter);
+
             var items = await CloudTable
                 .ExecuteQuerySegmentedAsync(query, new TableContinuationToken());
 

@@ -48,8 +48,9 @@ namespace KokeiroLifeLogger.Services
         {
             var now = DateTime.UtcNow;
 
-            var fromDate = now.AddDays(-1);
-            var toDate = now;
+            var fromDateUtc = now.AddDays(-1);
+            var toDateUtc = now;
+            var dateFormat = "yyyy/MM/dd HH:mm:ss";
 
             var sb = new StringBuilder();
 
@@ -79,7 +80,7 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var iftttData = await iftttService.GetDataByDate(fromDate, toDate);
+                var iftttData = await iftttService.GetDataByDate(fromDateUtc, toDateUtc);
                 AppendStringByPartitionKey(iftttData, sb, "pocket", "Pocketに突っ込んだ記事");
                 AppendStringTwitterLiked(iftttData, sb);
                 AppendStringByPartitionKey(iftttData, sb, "github_star", "GitHubでStarつけたリポジトリ");
@@ -93,7 +94,7 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var weightMeasurement = await weightMeasurementService.GetByDate(fromDate, toDate);
+                var weightMeasurement = await weightMeasurementService.GetByDate(fromDateUtc, toDateUtc);
                 if (weightMeasurement != null)
                 {
                     sb.AppendLine($"体重:{weightMeasurement.Weight}kg");
@@ -101,7 +102,7 @@ namespace KokeiroLifeLogger.Services
                     sb.AppendLine($"体脂肪量:{weightMeasurement.FatMass}kg");
                     sb.AppendLine($"体脂肪率:{weightMeasurement.FatPercent}%");
 
-                    sb.AppendLine($"測定時間:" + weightMeasurement.MesuredAt.AddHours(9).ToString("yyyy/MM/dd HH:mm:ss"));
+                    sb.AppendLine($"測定時間:" + weightMeasurement.MesuredAt.AddHours(9).ToString(dateFormat));
                 }
                 else
                 {
@@ -132,10 +133,10 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var githubContribution = await gitHubContributionsReader.GetContributionsAsync(toDate, "kokeiro001");
+                var githubContribution = await gitHubContributionsReader.GetContributionsAsync(toDateUtc, "kokeiro001");
 
                 sb.AppendLine($"GitHubのコントリビューション数：{githubContribution.Contributions}");
-                sb.AppendLine($"TargetDate：{githubContribution.Date}");
+                sb.AppendLine($"TargetDate：{githubContribution.Date.ToString(dateFormat)}");
             }
             catch (Exception e)
             {
@@ -147,7 +148,7 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var text = await withingsSleepService.GetDiaryData(fromDate, toDate);
+                var text = await withingsSleepService.GetDiaryData(fromDateUtc, toDateUtc);
 
                 sb.AppendLine(text);
 
@@ -158,6 +159,9 @@ namespace KokeiroLifeLogger.Services
             }
 
             sb.AppendLine();
+
+            sb.AppendLine($"(debug) {fromDateUtc.ToString(dateFormat)}-{toDateUtc.ToString(dateFormat)}");
+
             return sb.ToString();
         }
 

@@ -55,10 +55,7 @@ namespace KokeiroLifeLogger.Services
             var outData = await GetOutBedDataByDate(from, to);
 
             var data = intoData.Concat(outData)
-                .OrderBy(x => x.Date)
-                .GroupBy(x => x.Date.ToString())
-                .Where(x => x.Count() == 1)
-                .SelectMany(x => x);
+                .OrderBy(x => x.InsertedTime);
 
             var intoItem = default(WithingsSleepEntity);
             var lenghtList = new List<SleepLength>();
@@ -71,8 +68,8 @@ namespace KokeiroLifeLogger.Services
                     {
                         lenghtList.Add(new SleepLength
                         {
-                            IntoTime = intoItem.Date,
-                            OutTime = item.Date,
+                            IntoTime = intoItem.Date.AddHours(9),
+                            OutTime = item.Date.AddHours(9),
                         });
                         intoItem = null;
                     }
@@ -88,13 +85,27 @@ namespace KokeiroLifeLogger.Services
             }
 
             var format = "yyyy/MM/dd HH:mm";
-            var text = lenghtList
+
+            var first = data.FirstOrDefault();
+
+            var text = string.Empty;
+            if (first?.Action == "out bed")
+            {
+                text += $"[起]{first.Date.ToString(format)}\n";
+            }
+
+            text = lenghtList
                 .Select(x => $"[寝]{x.IntoTime.ToString(format)}\n↓\n[起]{x.OutTime.ToString(format)}\n ({x.Lenght.ToString(@"hh\hmm\m")})\n")
                 .JoinString("\n");
 
             if (intoItem != null)
             {
-                text += $"[寝]{intoItem.Date.ToString(format)}\n";
+                text += $"\n[寝]{intoItem.Date.ToString(format)}\n";
+            }
+
+            if (string.IsNullOrEmpty(text))
+            {
+                text = "none bed data.";
             }
 
             return text;
