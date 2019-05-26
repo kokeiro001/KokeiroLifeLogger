@@ -20,7 +20,7 @@ namespace KokeiroLifeLogger.Services
         private readonly IIFTTTService iftttService;
         private readonly IWeightMeasurementService weightMeasurementService;
         private readonly IGitHubService gitHubContributionsReader;
-        private readonly IWithingsSleepService withingsSleepService;
+        private readonly SleepDataService sleepDataService;
 
         public LifeLogService(
             ISlackManualDiaryService slackManualDiaryService,
@@ -28,7 +28,7 @@ namespace KokeiroLifeLogger.Services
             IIFTTTService iftttService,
             IWeightMeasurementService weightMeasurementService,
             IGitHubService gitHubContributionsReader,
-            IWithingsSleepService withingsSleepService
+            SleepDataService sleepDataService
         )
         {
             this.slackManualDiaryService = slackManualDiaryService;
@@ -36,7 +36,7 @@ namespace KokeiroLifeLogger.Services
             this.iftttService = iftttService;
             this.weightMeasurementService = weightMeasurementService;
             this.gitHubContributionsReader = gitHubContributionsReader;
-            this.withingsSleepService = withingsSleepService;
+            this.sleepDataService = sleepDataService;
         }
 
         private string GetTitle()
@@ -148,7 +148,7 @@ namespace KokeiroLifeLogger.Services
 
             try
             {
-                var text = await withingsSleepService.GetDiaryData(fromDateUtc, toDateUtc);
+                var text = await sleepDataService.GetDiary(fromDateUtc, toDateUtc);
 
                 sb.AppendLine(text);
 
