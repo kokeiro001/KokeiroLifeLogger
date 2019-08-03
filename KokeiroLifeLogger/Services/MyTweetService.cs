@@ -29,7 +29,7 @@ namespace KokeiroLifeLogger.Services
 
         public async Task Run(TweetRequest tweet)
         {
-            var todos = PasrseTodoTweet(tweet).ToArray();
+            var todos = ParseTodoTweet(tweet).ToArray();
 
             if (todos.Length == 0)
             {
@@ -71,18 +71,18 @@ namespace KokeiroLifeLogger.Services
         /// - やること2
         /// みたいなフォーマットのツイートから、「やること1」「やること2」を取得する
         /// </summary>
-        private IEnumerable<string> PasrseTodoTweet(TweetRequest tweet)
+        private IEnumerable<string> ParseTodoTweet(TweetRequest tweet)
         {
             var lines = tweet.Text.Split('\n');
 
             if (lines.Length == 0)
             {
-                return null;
+                return new string[0];
             }
 
             if (!lines[0].ToLower().Contains("todo"))
             {
-                return null;
+                return new string[0];
             }
 
             var todo = new List<string>();
