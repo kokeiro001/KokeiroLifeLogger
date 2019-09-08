@@ -16,6 +16,69 @@ namespace KokeiroLifeLogger.Services
         Task Run(TweetRequest tweet);
     }
 
+    class TrelloSprint
+    {
+        private readonly static DateTime Sprint0StartDate = new DateTime(2019, 4, 29);
+
+        public int Number { get; private set; }
+
+        public DateTime StartDate { get; private set; }
+
+        public DateTime EndDate { get; private set; }
+
+        public string Name => StartDate.ToString("yyyy MM/dd") + "-" + EndDate.ToString("MM/dd");
+
+        public static TrelloSprint GetSprint(DateTime dateTime)
+        {
+            var pasedDate = (dateTime - Sprint0StartDate).Days;
+
+            var currentSprint = (pasedDate / 14);
+
+            var currentSprintStartDate = Sprint0StartDate.AddDays(currentSprint * 14);
+            var currentSprintEndDate = currentSprintStartDate.AddDays(13);
+
+            return new TrelloSprint
+            {
+                Number = currentSprint,
+                StartDate = currentSprintStartDate,
+                EndDate = currentSprintEndDate,
+            };
+        }
+
+        public static bool TryParseFromName(string sprintName, out TrelloSprint result)
+        {
+            try
+            {
+                var split = sprintName.Split(' ');
+
+                var year = int.Parse(split[0]);
+
+                var dateSplit = split[1].Split('-');
+
+                var startSplit = dateSplit[0].Split('/');
+                var startMonth = int.Parse(startSplit[0]);
+                var startDay = int.Parse(startSplit[1]);
+                var startDate = new DateTime(year, startMonth, startDay);
+
+                var endSplit = dateSplit[1].Split('/');
+                var endMonth = int.Parse(endSplit[0]);
+                var endDay = int.Parse(endSplit[1]);
+                var endDate = new DateTime(year, endMonth, endDay).AddDays(1).AddSeconds(-1);
+
+                result = GetSprint(startDate);
+
+                // todo: 期待するスプリントフォーマットか検証する
+
+                return true;
+            }
+            catch
+            {
+                result = new TrelloSprint();
+                return false;
+            }
+        }
+    }
+
     public class MyTweetService : IMyTweetService
     {
         private readonly ITrelloFactory trelloFactory;
@@ -107,52 +170,38 @@ namespace KokeiroLifeLogger.Services
         /// </summary>
         private async Task<IBoard> GetBoard(DateTime jstDateTime)
         {
-            Func<string, (DateTime? start, DateTime? end)> parseBoardNameDate = boardName => 
-            {
-                try
-                {
-                    var split = boardName.Split(' ');
-
-                    var year = int.Parse(split[0]);
-
-                    var dateSplit = split[1].Split('-');
-
-                    var startSplit = dateSplit[0].Split('/');
-                    var startMonth = int.Parse(startSplit[0]);
-                    var startDay = int.Parse(startSplit[1]);
-                    var start = new DateTime(year, startMonth, startDay);
-
-                    var endSplit = dateSplit[1].Split('/');
-                    var endMonth = int.Parse(endSplit[0]);
-                    var endDay = int.Parse(endSplit[1]);
-                    var end = new DateTime(year, endMonth, endDay).AddDays(1).AddSeconds(-1);
-
-                    return (start, end);
-                }
-                catch 
-                {
-                    return (null, null);
-                }
-            };
+            var targetSprint = TrelloSprint.GetSprint(jstDateTime);
 
             var me = await trelloFactory.Me();
 
             foreach (var board in me.Boards)
             {
-                var (startDate, endDate) = parseBoardNameDate(board.Name);
-
-                if (!startDate.HasValue || !endDate.HasValue)
+                if (!TrelloSprint.TryParseFromName(board.Name, out var result))
                 {
                     continue;
                 }
 
-                if (jstDateTime >= startDate && jstDateTime <= endDate)
+                if (result.Number == targetSprint.Number)
                 {
                     return board;
                 }
             }
 
-            return null;
+            // not found baord. create board.
+            var newBaord = await me.Boards.Add(targetSprint.Name);
+
+            await newBaord.Refresh();
+
+            var listNames = new string[] { "todo", "progress", "done" };
+
+            for (int i = 0; i < newBaord.Lists.Count(); i++)
+            {
+                newBaord.Lists[i].Name = listNames[i];
+            }
+
+            await me.StarredBoards.Add(newBaord);
+
+            return newBaord;
         }
     }
 }
