@@ -100,12 +100,7 @@ namespace KokeiroLifeLogger.Services
             }
 
             var jstNow = DateTime.UtcNow.AddHours(9);
-            var currentBoard = await GetBoard(jstNow);
-
-            if (currentBoard == null)
-            {
-                return;
-            }
+            var currentBoard = await GetCurrentBoard(jstNow);
 
             await currentBoard.Refresh();
 
@@ -165,10 +160,9 @@ namespace KokeiroLifeLogger.Services
         /// yyyy MM/dd-MMdd
         /// ってフォーマットのボード名の中から、
         /// 現在の日付内のBoardを取得する。
-        /// ex)今日が5/16だったら「2019 5/14-5/21」って名前のボードを取得する
-        /// Boardの名前がそもそもフォーマット外だった場合、それは拾われない
+        /// 存在しなかった場合、新規作成する。
         /// </summary>
-        private async Task<IBoard> GetBoard(DateTime jstDateTime)
+        private async Task<IBoard> GetCurrentBoard(DateTime jstDateTime)
         {
             var targetSprint = TrelloSprint.GetSprint(jstDateTime);
 
@@ -192,14 +186,25 @@ namespace KokeiroLifeLogger.Services
 
             await newBaord.Refresh();
 
+            await newBaord.Lists.Refresh();
+
             var listNames = new string[] { "todo", "progress", "done" };
 
-            for (int i = 0; i < newBaord.Lists.Count(); i++)
+            // listが少なかったら追加する
+            while (newBaord.Lists.Count() < listNames.Length)
+            {
+                await newBaord.Lists.Add($"tmp{newBaord.Lists.Count()}");
+                await newBaord.Lists.Refresh();
+            }
+
+            for (int i = 0; i < listNames.Length; i++)
             {
                 newBaord.Lists[i].Name = listNames[i];
+                await newBaord.Lists.Refresh();
             }
 
             await me.StarredBoards.Add(newBaord);
+            await newBaord.Lists.Refresh();
 
             return newBaord;
         }
