@@ -24,8 +24,8 @@ namespace KokeiroLifeLogger.Services
         {
             var client = new SlackTaskClient(OAuthAccessToken);
 
-            var channesl = await client.GetChannelListAsync();
-            var diaryChannel = channesl.channels
+            var channels = await client.GetChannelListAsync();
+            var diaryChannel = channels.channels
                 .Where(x => x.name == "diary")
                 .FirstOrDefault();
 
